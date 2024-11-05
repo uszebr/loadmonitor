@@ -31,7 +31,7 @@ type Job struct {
 }
 
 // NewJob creating pointer to the new Job with given complexity
-func NewJob(complexity int) *Job {
+func NewJob(complexity int64) *Job {
 	return &Job{Id: uuid.New(), Complexity: newComplexity(complexity), Finished: false}
 }
 
@@ -69,10 +69,10 @@ func execute(ctx context.Context, j *Job) int {
 }
 
 // abstracting complexity
-type complexity int
+type complexity int64
 
 // newComplexity creating with validation logic
-func newComplexity(initial int) complexity {
+func newComplexity(initial int64) complexity {
 	if initial < 0 {
 		return complexity(0)
 	}
