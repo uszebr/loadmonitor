@@ -1,22 +1,14 @@
 package loadmanagerview
 
+import baseview "github.com/uszebr/loadmonitor/inner/view/base"
+
 templ LoadManagerPage() {
-	<!DOCTYPE html>
-	<html lang="en">
-		<head>
-			<meta charset="utf-8"/>
-			<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-			<link href="/assets/img/icon/favicon.png" rel="icon"/>
-			<link href="/assets/img/icon/apple-touch-icon.png" rel="apple-touch-icon"/>
-			<title>Load Monitor</title>
-		</head>
-		<body>
-			{ children... }
-			<footer id="footer">
-				<div>
-					Created by <strong><span>uszebr</span></strong>. 2024
-				</div>
-			</footer>
-		</body>
-	</html>
+	@baseview.BasePage(baseview.BaseParam{Title: "Load Manager - Changing Job complexity and quantity of workers"}) {
+		<div class="page-inner">
+			<div class="page-header">
+				<h4 class="page-title">Load Manager</h4>
+			</div>
+			<div class="page-category">Inner page content goes here</div>
+		</div>
+	}
 }
