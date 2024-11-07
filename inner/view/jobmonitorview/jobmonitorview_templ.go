@@ -17,7 +17,7 @@ import (
 	"strconv"
 )
 
-func JobMonitorPage(jobCollector *collector.Collector) templ.Component {
+func JobMonitorPage() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -50,7 +50,7 @@ func JobMonitorPage(jobCollector *collector.Collector) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"page-inner\"><div class=\"page-header\"><h4 class=\"page-title\">Jobs Monitor</h4></div><div class=\"page-category\">Finished Jobs Data</div><div class=\"row\"><div class=\"col-md-12\"><div class=\"card\"><div class=\"card-body\"><div id=\"job-updates\" hx-post=\"/jobmonitor\" hx-trigger=\"every 1s\"></div></div></div></div></div></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"page-inner\"><div class=\"page-header\"><h4 class=\"page-title\">Jobs Monitor</h4></div><div class=\"page-category\">Finished Jobs Data</div><!-- Card --><h3 class=\"fw-bold mb-3\">Card</h3><div class=\"row\"><div class=\"col-sm-6 col-md-3\"><div class=\"card card-stats card-primary card-round\"><div class=\"card-body\"><div class=\"row\"><div class=\"col-5\"><div class=\"icon-big text-center\"><i class=\"far fa-check-circle\"></i></div></div><div class=\"col-7 col-stats\"><div class=\"numbers\"><p class=\"card-category\">Jobs Completed</p><div class=\"card-title h4\" id=\"jobs-quantity\"></div></div></div></div></div></div></div><div class=\"col-sm-6 col-md-3\"><div class=\"card card-stats card-success card-round\"><div class=\"card-body\"><div class=\"row\"><div class=\"col-5\"><div class=\"icon-big text-center\"><i class=\"fas fa-luggage-cart\"></i></div></div><div class=\"col-7 col-stats\"><div class=\"numbers\"><p class=\"card-category\">Total Complexity</p><div id=\"total-complexity\" class=\"card-title h4\"></div></div></div></div></div></div></div></div><div hx-post=\"/jobmonitor\" hx-trigger=\"every 1s\"></div><div class=\"row\"><div class=\"col-md-12\"><div class=\"card\"><table id=\"job-updates\" class=\"table\"><thead><tr><th scope=\"col\">#</th><th scope=\"col\">Complexity</th><th scope=\"col\">Memory</th><th scope=\"col\">Duration</th></tr></thead> <tbody id=\"table-jobs\"></tbody></table></div></div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -85,33 +85,7 @@ func JobMonitorPost(jobCollector *collector.Collector) templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h5>Jobs Done: ")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var4 string
-		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(jobCollector.CountSt())
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/jobmonitorview/jobmonitorview.templ`, Line: 33, Col: 40}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" Total Complexity: ")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var5 string
-		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(jobCollector.SumOfComplexitySt())
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/jobmonitorview/jobmonitorview.templ`, Line: 33, Col: 95}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h5><table class=\"table\"><thead><tr><th scope=\"col\">#</th><th scope=\"col\">Complexity</th><th scope=\"col\">Memory</th><th scope=\"col\">Duration</th></tr></thead> <tbody>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<tbody id=\"job-updates\" hx-swap-oob=\"innerHTML:#job-updates tbody\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -119,7 +93,33 @@ func JobMonitorPost(jobCollector *collector.Collector) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</tbody></table>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</tbody><div id=\"jobs-quantity\" hx-swap-oob=\"innerHTML\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var4 string
+		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(jobCollector.CountSt())
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/jobmonitorview/jobmonitorview.templ`, Line: 87, Col: 73}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div id=\"total-complexity\" hx-swap-oob=\"innerHTML\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var5 string
+		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(jobCollector.SumOfComplexitySt())
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/jobmonitorview/jobmonitorview.templ`, Line: 88, Col: 86}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -194,7 +194,7 @@ func jobEntity(job job.JobI) templ.Component {
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(int(job.ComplexityInt())))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/jobmonitorview/jobmonitorview.templ`, Line: 61, Col: 46}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/jobmonitorview/jobmonitorview.templ`, Line: 103, Col: 46}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
@@ -207,7 +207,7 @@ func jobEntity(job job.JobI) templ.Component {
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(int(job.MemoryLoadInt())))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/jobmonitorview/jobmonitorview.templ`, Line: 62, Col: 46}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/jobmonitorview/jobmonitorview.templ`, Line: 104, Col: 46}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
@@ -220,7 +220,7 @@ func jobEntity(job job.JobI) templ.Component {
 		var templ_7745c5c3_Var10 string
 		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(job.JobDuration().String())
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/jobmonitorview/jobmonitorview.templ`, Line: 63, Col: 34}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/jobmonitorview/jobmonitorview.templ`, Line: 105, Col: 34}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 		if templ_7745c5c3_Err != nil {
@@ -284,7 +284,7 @@ func coloredIdPrefix(u uuid.UUID) templ.Component {
 		var templ_7745c5c3_Var14 string
 		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(uuidutil.First4Symbols(u))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/jobmonitorview/jobmonitorview.templ`, Line: 68, Col: 83}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/jobmonitorview/jobmonitorview.templ`, Line: 110, Col: 82}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 		if templ_7745c5c3_Err != nil {

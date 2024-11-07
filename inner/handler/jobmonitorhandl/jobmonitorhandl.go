@@ -18,7 +18,7 @@ func New(jc *collector.Collector) JobMonitorHandler {
 }
 
 func (h JobMonitorHandler) HandlePage(c *gin.Context) {
-	err := ginutil.Render(c, 200, jobmonitorview.JobMonitorPage(h.jobCollector))
+	err := ginutil.Render(c, 200, jobmonitorview.JobMonitorPage())
 	if err != nil {
 		fmt.Printf("Error Rendering: %v\n", err.Error())
 	}
