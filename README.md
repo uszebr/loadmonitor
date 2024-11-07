@@ -4,13 +4,13 @@ Emulating loading on GoLang using dynamic quantity of gorutines with dynamic amo
 Load Monitor can help with calculating appropriate quantity of gorutines for different workload and system.
 
 - Job: entity that loads proccessor and memory
-  - complexity level of proccessor load
-  - memoryLoad level of memory(in bytes) taken during job execution(cleared after job is done or canceled)
-- JobProducer creating jobs to no buffer channel
-- WorkerPool executing Jobs with limited adjustable quantity of workers(gorutines) return jobProccessed channel
+  - complexity: level of proccessor load
+  - memoryLoad: level of memory(in bytes) taken during job execution(cleared after job is done or canceled)
+- JobProducer: creating jobs to no buffer channel
+- WorkerPoo:l executing Jobs with limited adjustable quantity of workers(gorutines) return jobProccessed channel
 
 
- # Dependensies
+ # Dependencies
  - Go
     - Gin
     - Templ

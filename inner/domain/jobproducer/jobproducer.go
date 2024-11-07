@@ -2,6 +2,7 @@ package jobproducer
 
 import (
 	"context"
+	"fmt"
 	"sync"
 
 	"github.com/uszebr/loadmonitor/inner/domain/job"
@@ -10,29 +11,47 @@ import (
 type JobProducer struct {
 	jobComplexity int64
 	jobMemoryLoad int64
-	mu            sync.Mutex
+	mu            sync.RWMutex
 }
 
 func New(jobComplexity int64, jobMemoryLoad int64) *JobProducer {
-	return &JobProducer{jobComplexity: jobComplexity, jobMemoryLoad: jobMemoryLoad, mu: sync.Mutex{}}
+	return &JobProducer{jobComplexity: jobComplexity, jobMemoryLoad: jobMemoryLoad, mu: sync.RWMutex{}}
 }
 
 func (jp *JobProducer) Start(ctx context.Context) <-chan *job.Job {
 	res := make(chan *job.Job)
-	go func(jpInner *JobProducer) {
+	go func() {
 		defer close(res)
 		for {
 			select {
 			case <-ctx.Done():
 				return
-			default:
-				jp.mu.Lock()
-				res <- job.NewJob(jpInner.jobComplexity, jpInner.jobMemoryLoad)
-				jp.mu.Unlock()
+			case res <- job.NewJob(jp.JobComplexity(), jp.JobMemoryLoad()):
+				// Job successfully sent to the channel
 			}
 		}
-	}(jp)
+	}()
 	return res
+}
+
+func (jp *JobProducer) JobComplexity() int64 {
+	jp.mu.RLock()
+	defer jp.mu.RUnlock()
+	return jp.jobComplexity
+}
+
+func (jp *JobProducer) JobMemoryLoad() int64 {
+	jp.mu.RLock()
+	defer jp.mu.RUnlock()
+	return jp.jobMemoryLoad
+}
+
+func (jp *JobProducer) JobComplexitySt() string {
+	return fmt.Sprintf("%d", jp.JobComplexity())
+}
+
+func (jp *JobProducer) JobMemoryLoadSt() string {
+	return fmt.Sprintf("%d", jp.JobMemoryLoad())
 }
 
 func (jp *JobProducer) SetComplexity(newComplexity int64) {
