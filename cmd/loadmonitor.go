@@ -11,7 +11,9 @@ import (
 	"github.com/uszebr/loadmonitor/inner/domain/collector"
 	"github.com/uszebr/loadmonitor/inner/domain/jobproducer"
 	"github.com/uszebr/loadmonitor/inner/domain/workerpool"
+	"github.com/uszebr/loadmonitor/inner/handler/jobmonitorhandl"
 	"github.com/uszebr/loadmonitor/inner/handler/loadmanagerhandl"
+	"github.com/uszebr/loadmonitor/inner/handler/runtimehandl"
 	// "github.com/uszebr/loadmonitor/inner/domain/workerpool"
 )
 
@@ -66,7 +68,13 @@ func main() {
 	engine.POST("/loadmanager-workers", loadManagerHandler.HandleWorkers)
 
 	// page to monitor collector of last finished jobs, jobs quantity and accumulated complexity for finished jobs
-	//engine.GET("/jobmonitor", )
+	jmonitor := jobmonitorhandl.New(collector)
+	engine.GET("/jobmonitor", jmonitor.HandlePage)
+	// endpoint with job collector updates
+	engine.POST("/jobmonitor", jmonitor.HandlePost)
+
+	rthandler := runtimehandl.New()
+	engine.GET("/runtimedata", rthandler.HandlePage)
 	engine.Run(":8085")
 
 	cancel() // TODO add to graceful shutdown
@@ -76,4 +84,5 @@ func main() {
 	// config with default/start options
 	// config path in env for prod/dev
 	// logger with prod/dev
+	// Multiplicator for job complexity store in config
 }

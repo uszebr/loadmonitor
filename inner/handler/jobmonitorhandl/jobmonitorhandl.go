@@ -23,3 +23,10 @@ func (h JobMonitorHandler) HandlePage(c *gin.Context) {
 		fmt.Printf("Error Rendering: %v\n", err.Error())
 	}
 }
+
+func (h JobMonitorHandler) HandlePost(c *gin.Context) {
+	err := ginutil.Render(c, 200, jobmonitorview.JobMonitorPost(h.jobCollector))
+	if err != nil {
+		fmt.Printf("Error Rendering: %v\n", err.Error())
+	}
+}
