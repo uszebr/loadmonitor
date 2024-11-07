@@ -1,6 +1,8 @@
 package loadmanagerhandl
 
 import (
+	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -21,8 +23,10 @@ func New(jp *jobproducer.JobProducer, wp *workerpool.WorkerPool) LoadManagerHand
 }
 
 func (h *LoadManagerHandler) HandlePage(c *gin.Context) {
-	jobProducerFormData := loadmanagerview.JobProducerFormData{JobProducer: h.jobProducer, Success: true}
-	_ = ginutil.Render(c, 200, loadmanagerview.LoadManagerPage(jobProducerFormData, h.workerPool))
+	// success set to false. To prevent showing Fade-Out icon when request is done(not implemented yet)
+	jobProducerFormData := loadmanagerview.JobProducerFormData{JobProducer: h.jobProducer, Success: false}
+	workerPoolFormData := loadmanagerview.WorkerPoolFormData{WorkerPool: h.workerPool, Success: false}
+	_ = ginutil.Render(c, 200, loadmanagerview.LoadManagerPage(jobProducerFormData, workerPoolFormData))
 	// TODO: log err here
 }
 
@@ -31,7 +35,84 @@ func (h *LoadManagerHandler) HandleProducer(c *gin.Context) {
 	// TODO: DELETE
 	time.Sleep(3 * time.Second)
 	// TODO: DELETE^^^
-	jobProducerFormData := loadmanagerview.JobProducerFormData{JobProducer: h.jobProducer, Success: true, ErrorComplexity: "asdfasdf", ErrorMemoryLoad: "qrwerqew"}
+
+	complexityForm := c.PostForm("complexity")
+	memoryLoadForm := c.PostForm("memory-load")
+	comlexity, memoryLoad, errComplexity, errMemoryLoad := validateProducerFormValues(complexityForm, memoryLoadForm)
+	if errComplexity != "" || errMemoryLoad != "" {
+		jobProducerFormDataerr := loadmanagerview.JobProducerFormData{JobProducer: h.jobProducer, Success: false, ErrorComplexity: errComplexity, ErrorMemoryLoad: errMemoryLoad}
+		_ = ginutil.Render(c, 200, loadmanagerview.ProducerForm(jobProducerFormDataerr))
+		return
+	}
+	h.jobProducer.SetComplexity(int64(comlexity))
+	h.jobProducer.SetMemoryLoad(int64(memoryLoad))
+	jobProducerFormData := loadmanagerview.JobProducerFormData{JobProducer: h.jobProducer, Success: true, ErrorComplexity: "", ErrorMemoryLoad: ""}
 	_ = ginutil.Render(c, 200, loadmanagerview.ProducerForm(jobProducerFormData))
 	// TODO: log err here
+}
+
+// validateProducerFormValues return issues(main or secondary) for all form inputs. Client can fix both
+func validateProducerFormValues(complexitySt, memoryLoadSt string) (int, int, string, string) {
+	errComplexity := ""
+	errMemoryLoad := ""
+	comlexity, err := strconv.Atoi(complexitySt)
+	if err != nil {
+		//first priority issue
+		errComplexity = fmt.Sprintf("complexity issue: %v", err.Error())
+	} else {
+		if comlexity < 0 {
+			comlexity = 0
+			errComplexity = "complexity should be >= 0"
+		}
+	}
+
+	memoryLoad, err := strconv.Atoi(memoryLoadSt)
+	if err != nil {
+		//first priority issue
+		errMemoryLoad = fmt.Sprintf("memory load issue: %v", err.Error())
+	} else {
+		if memoryLoad < 0 {
+			memoryLoad = 0
+			errMemoryLoad = "memory load should be >= 0"
+		}
+	}
+	return comlexity, memoryLoad, errComplexity, errMemoryLoad
+}
+
+func (h *LoadManagerHandler) HandleWorkers(c *gin.Context) {
+
+	// TODO: DELETE
+	time.Sleep(3 * time.Second)
+	// TODO: DELETE^^^
+
+	workersForm := c.PostForm("workers")
+	workers, errWorkers := validateWorkersFormValues(workersForm)
+	if errWorkers != "" {
+		workerPoolFormData := loadmanagerview.WorkerPoolFormData{WorkerPool: h.workerPool, Success: false, ErrorWorkerQuantity: errWorkers}
+		_ = ginutil.Render(c, 200, loadmanagerview.WorkerForm(workerPoolFormData))
+		return
+	}
+
+	h.workerPool.SetWorkerCount(workers)
+
+	workerPoolFormData := loadmanagerview.WorkerPoolFormData{WorkerPool: h.workerPool, Success: true, ErrorWorkerQuantity: ""}
+	_ = ginutil.Render(c, 200, loadmanagerview.WorkerForm(workerPoolFormData))
+	// TODO: log err here
+}
+
+// validateWorkersFormValues return string instead of error just to consitancy(follow pattern in previous validator)
+func validateWorkersFormValues(workersSt string) (int, string) {
+	errWorkers := ""
+
+	workers, err := strconv.Atoi(workersSt)
+	if err != nil {
+		//first priority issue
+		errWorkers = fmt.Sprintf("workers quantity: %v", err.Error())
+	} else {
+		if workers < 0 {
+			workers = 0
+			errWorkers = "complexity should be >= 0"
+		}
+	}
+	return workers, errWorkers
 }

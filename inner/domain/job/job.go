@@ -19,6 +19,19 @@ const (
 	COMPLEXITY_PARTICULAR_VALUE_MAX = 10
 )
 
+// stored here because a lot of consumers of this interface
+type JobI interface {
+	Do(ctx context.Context)
+	Id() uuid.UUID
+	ComplexityInt() int64
+	MemoryLoadInt() int64
+	Start() time.Time
+	End() time.Time
+	JobDuration() time.Duration
+	Status() JobStatus
+	Result() int64
+}
+
 // idea: TODO: add parameter for complexity of particular value
 // idea: TODO: add memory loader parameter... in bytes.. creating array with size, and put each inner result to the array(slice??) but not store this slice(array)into Job.. it shoul load memory only when job is executing
 type Job struct {
@@ -37,54 +50,69 @@ type Job struct {
 func NewJob(complexity int64, memoryLoadInitial int64) *Job {
 	return &Job{id: uuid.New(), complexity: newComplexity(complexity), status: NEW, memoryLoad: newComplexity(memoryLoadInitial)}
 }
+
+// Id getter
 func (j *Job) Id() uuid.UUID {
 	j.mu.RLock()
 	defer j.mu.RUnlock()
 	return j.id
 }
 
+// Complexity getter
 func (j *Job) Complexity() complexity {
 	j.mu.RLock()
 	defer j.mu.RUnlock()
 	return j.complexity
 }
 
+// Complexity getter
+func (j *Job) ComplexityInt() int64 {
+	return int64(j.Complexity())
+}
+
+// Start getter for start time
 func (j *Job) Start() time.Time {
 	j.mu.RLock()
 	defer j.mu.RUnlock()
 	return j.start
 }
 
+// setStart private setter
 func (j *Job) setStart(t time.Time) {
 	j.mu.Lock()
 	defer j.mu.Unlock()
 	j.start = t
 }
 
+// End getter for end time
 func (j *Job) End() time.Time {
 	j.mu.RLock()
 	defer j.mu.RUnlock()
 	return j.end
 }
 
+// setEnd private setter
 func (j *Job) setEnd(t time.Time) {
 	j.mu.Lock()
 	defer j.mu.Unlock()
 	j.end = t
 }
 
+// Status getter
 func (j *Job) Status() JobStatus {
 	j.mu.RLock()
 	defer j.mu.RUnlock()
 	return j.status
 }
 
+// setStatus private setter
 func (j *Job) setStatus(js JobStatus) {
 	j.mu.Lock()
 	defer j.mu.Unlock()
 	j.status = js
 }
 
+// Result getter
 func (j *Job) Result() int64 {
 	j.mu.RLock()
 	defer j.mu.RUnlock()
@@ -101,6 +129,10 @@ func (j *Job) MemoryLoad() complexity {
 	j.mu.RLock()
 	defer j.mu.RUnlock()
 	return j.memoryLoad
+}
+
+func (j *Job) MemoryLoadInt() int64 {
+	return int64(j.MemoryLoad())
 }
 
 // Start starting particular job

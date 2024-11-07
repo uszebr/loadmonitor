@@ -151,7 +151,7 @@ func baseFive(param BaseParam) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<link href=\"/assets/img/icon/favicon.png\" rel=\"icon\" type=\"image/x-icon\"><link href=\"/assets/img/icon/apple-touch-icon.png\" rel=\"apple-touch-icon\"><!-- Fonts and icons --><script src=\"/assets/js/plugin/webfont/webfont.min.js\"></script><script>\n                WebFont.load({\n                    google: { families: [\"Public Sans:300,400,500,600,700\"] },\n                    custom: {\n                    families: [\n                        \"Font Awesome 5 Solid\",\n                        \"Font Awesome 5 Regular\",\n                        \"Font Awesome 5 Brands\",\n                        \"simple-line-icons\",\n                    ],\n                    urls: [\"/assets/css/fonts.min.css\"],\n                    },\n                    active: function () {\n                    sessionStorage.fonts = true;\n                    },\n                });\n            </script><!-- CSS Files --><link rel=\"stylesheet\" href=\"/assets/css/bootstrap.min.css\"><link rel=\"stylesheet\" href=\"/assets/css/plugins.min.css\"><link rel=\"stylesheet\" href=\"/assets/css/theme.min.css\"></head><body>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<link href=\"/assets/img/icon/favicon.png\" rel=\"icon\" type=\"image/x-icon\"><link href=\"/assets/img/icon/apple-touch-icon.png\" rel=\"apple-touch-icon\"><!-- Fonts and icons --><script src=\"/assets/js/plugin/webfont/webfont.min.js\"></script><script>\n                WebFont.load({\n                    google: { families: [\"Public Sans:300,400,500,600,700\"] },\n                    custom: {\n                    families: [\n                        \"Font Awesome 5 Solid\",\n                        \"Font Awesome 5 Regular\",\n                        \"Font Awesome 5 Brands\",\n                        \"simple-line-icons\",\n                    ],\n                    urls: [\"/assets/css/fonts.min.css\"],\n                    },\n                    active: function () {\n                    sessionStorage.fonts = true;\n                    },\n                });\n            </script><!-- CSS Files --><link rel=\"stylesheet\" href=\"/assets/css/mystyles.css\"><link rel=\"stylesheet\" href=\"/assets/css/bootstrap.min.css\"><link rel=\"stylesheet\" href=\"/assets/css/plugins.min.css\"><link rel=\"stylesheet\" href=\"/assets/css/theme.min.css\"></head><body>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -209,7 +209,7 @@ func descriptionTag(description string) templ.Component {
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(description)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/baseview/baseview.templ`, Line: 176, Col: 29}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/baseview/baseview.templ`, Line: 177, Col: 29}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -258,7 +258,7 @@ func keywordsTag(keywords []string) templ.Component {
 			var templ_7745c5c3_Var9 string
 			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(strings.Join(keywords, ", "))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/baseview/baseview.templ`, Line: 184, Col: 46}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/baseview/baseview.templ`, Line: 185, Col: 46}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 			if templ_7745c5c3_Err != nil {
