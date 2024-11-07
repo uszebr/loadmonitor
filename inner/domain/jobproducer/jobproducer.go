@@ -8,14 +8,32 @@ import (
 	"github.com/uszebr/loadmonitor/inner/domain/job"
 )
 
+type JobProducerOption func(*JobProducer)
+
+func WithJobComplexity(jobComplexity int64) JobProducerOption {
+	return func(jp *JobProducer) {
+		jp.jobComplexity = jobComplexity
+	}
+}
+
+func WithMemoryLoad(jobMemoryLoad int64) JobProducerOption {
+	return func(jp *JobProducer) {
+		jp.jobMemoryLoad = jobMemoryLoad
+	}
+}
+
 type JobProducer struct {
 	jobComplexity int64
 	jobMemoryLoad int64
 	mu            sync.RWMutex
 }
 
-func New(jobComplexity int64, jobMemoryLoad int64) *JobProducer {
-	return &JobProducer{jobComplexity: jobComplexity, jobMemoryLoad: jobMemoryLoad, mu: sync.RWMutex{}}
+func New(options ...JobProducerOption) *JobProducer {
+	res := &JobProducer{mu: sync.RWMutex{}}
+	for _, option := range options {
+		option(res)
+	}
+	return res
 }
 
 func (jp *JobProducer) Start(ctx context.Context) <-chan job.JobI {

@@ -10,7 +10,7 @@ import (
 
 func TestJobProducer_New(t *testing.T) {
 	// Test case for initializing a new JobProducer
-	jp := New(10, 1024)
+	jp := New(WithJobComplexity(10), WithMemoryLoad(1024))
 
 	// Assert that the complexity and memory load are set correctly
 	assert.Equal(t, int64(10), jp.JobComplexity(), "Job complexity should be 10")
@@ -19,7 +19,7 @@ func TestJobProducer_New(t *testing.T) {
 
 func TestJobProducer_SetComplexity(t *testing.T) {
 	// Test case for setting the job complexity
-	jp := New(10, 1024)
+	jp := New(WithJobComplexity(10), WithMemoryLoad(1024))
 
 	// Set new complexity
 	jp.SetComplexity(20)
@@ -30,7 +30,7 @@ func TestJobProducer_SetComplexity(t *testing.T) {
 
 func TestJobProducer_SetMemoryLoad(t *testing.T) {
 	// Test case for setting the job memory load
-	jp := New(10, 1024)
+	jp := New(WithJobComplexity(10), WithMemoryLoad(1024))
 
 	// Set new memory load
 	jp.SetMemoryLoad(2048)
@@ -41,7 +41,7 @@ func TestJobProducer_SetMemoryLoad(t *testing.T) {
 
 func TestJobProducer_JobComplexitySt(t *testing.T) {
 	// Test case for getting job complexity as a string
-	jp := New(10, 1024)
+	jp := New(WithJobComplexity(10), WithMemoryLoad(1024))
 
 	// Assert the JobComplexitySt returns the correct string representation
 	assert.Equal(t, "10", jp.JobComplexitySt(), "Job complexity as string should be '10'")
@@ -49,7 +49,7 @@ func TestJobProducer_JobComplexitySt(t *testing.T) {
 
 func TestJobProducer_JobMemoryLoadSt(t *testing.T) {
 	// Test case for getting job memory load as a string
-	jp := New(10, 1024)
+	jp := New(WithJobComplexity(10), WithMemoryLoad(1024))
 
 	// Assert the JobMemoryLoadSt returns the correct string representation
 	assert.Equal(t, "1024", jp.JobMemoryLoadSt(), "Job memory load as string should be '1024'")
@@ -59,7 +59,7 @@ func TestJobProducer_Start(t *testing.T) {
 	// Test case for starting the JobProducer and sending jobs via channel
 
 	// Create a new JobProducer
-	jp := New(10, 1024)
+	jp := New(WithJobComplexity(10), WithMemoryLoad(1024))
 
 	// Create a context with cancellation
 	ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond*100)
@@ -83,7 +83,7 @@ func TestJobProducer_JobProducerStop(t *testing.T) {
 	// Test case to ensure the JobProducer stops correctly when context is cancelled
 
 	// Create a new JobProducer
-	jp := New(10, 1024)
+	jp := New(WithJobComplexity(10), WithMemoryLoad(1024))
 
 	// Create a context with cancellation
 	ctx, cancel := context.WithCancel(context.Background())

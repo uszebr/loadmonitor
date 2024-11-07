@@ -22,7 +22,7 @@ func main() {
 
 	ctx, cancel := context.WithCancel(context.Background())
 
-	jProducer := jobproducer.New(50, 100)
+	jProducer := jobproducer.New(jobproducer.WithJobComplexity(50), jobproducer.WithMemoryLoad(10))
 	jobQueue := jProducer.Start(ctx)
 
 	wPool, proccessedJobx := workerpool.NewWorkerPool(ctx, 3, jobQueue)
@@ -35,26 +35,6 @@ func main() {
 
 	collector := collector.NewCollector(20)
 	collector.StartCollecting(proccessedJobx)
-
-	// Adjust workers dynamically
-	// time.Sleep(6 * time.Second)
-	// fmt.Println("Increasing worker count to 5")
-	// pool.SetWorkerCount(ctx, 5)
-
-	// time.Sleep(6 * time.Second)
-	// fmt.Println("MemoryLoad to 10_000_000)")
-	// jp.SetMemoryLoad(10_000_000)
-
-	// time.Sleep(15 * time.Second)
-	// fmt.Println("Complexity to 100")
-	// jp.SetComplexity(100)
-
-	// time.Sleep(15 * time.Second)
-	// fmt.Println("Decreasing worker count to 2")
-	// pool.SetWorkerCount(ctx, 2)
-	// time.Sleep(20 * time.Second)
-	// cancel()
-	// pool.Wait()
 
 	engine := gin.Default()
 	engine.Static("/assets", "./assets")
