@@ -1,0 +1,180 @@
+package baseview
+
+import "strings"
+
+templ BasePage(param BaseParam) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<title>Kaiadmin - Bootstrap 5 Admin Dashboard</title>
+			<meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport"/>
+			@titleTag(param.Title)
+			@descriptionTag(param.Description)
+			@keywordsTag(param.Keywords)
+			<link href="/assets/img/icon/favicon.png" rel="icon" type="image/x-icon"/>
+			<link href="/assets/img/icon/apple-touch-icon.png" rel="apple-touch-icon"/>
+			<!-- Fonts and icons -->
+			<script src="/assets/js/plugin/webfont/webfont.min.js"></script>
+			<script>
+                WebFont.load({
+                    google: { families: ["Public Sans:300,400,500,600,700"] },
+                    custom: {
+                    families: [
+                        "Font Awesome 5 Solid",
+                        "Font Awesome 5 Regular",
+                        "Font Awesome 5 Brands",
+                        "simple-line-icons",
+                    ],
+                    urls: ["/assets/css/fonts.min.css"],
+                    },
+                    active: function () {
+                    sessionStorage.fonts = true;
+                    },
+                });
+            </script>
+			<!-- CSS Files -->
+			<link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
+			<link rel="stylesheet" href="/assets/css/plugins.min.css"/>
+			<link rel="stylesheet" href="/assets/css/theme.min.css"/>
+		</head>
+		<body>
+			<div class="wrapper">
+				<!-- Sidebar -->
+				<div class="sidebar" data-background-color="dark">
+					<div class="sidebar-logo">
+						<!-- Logo Header -->
+						<div class="logo-header" data-background-color="dark">
+							<a href="/" class="logo text-light">
+								<img
+									src="/assets/img/base/logo.png"
+									alt="load manager"
+									height="20"
+								/> <span class="fw-bold p-2">Load Monitor</span>
+							</a>
+							<div class="nav-toggle">
+								<button class="btn btn-toggle toggle-sidebar">
+									<i class="gg-menu-right"></i>
+								</button>
+								<button class="btn btn-toggle sidenav-toggler">
+									<i class="gg-menu-left"></i>
+								</button>
+							</div>
+							<button class="topbar-toggler more">
+								<i class="gg-more-vertical-alt"></i>
+							</button>
+						</div>
+						<!-- End Logo Header -->
+					</div>
+					<div class="sidebar-wrapper scrollbar scrollbar-inner">
+						<div class="sidebar-content">
+							<ul class="nav nav-secondary">
+								<li class="nav-item">
+									<a href="/">
+										<i class="fas fa-desktop"></i>
+										<p>Monitor</p>
+									</a>
+								</li>
+								<li class="nav-item">
+									<a href="/loadmanager">
+										<i class="fas fa-file"></i>
+										<p>Load Manager</p>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!-- End Sidebar -->
+				<div class="main-panel">
+					<div class="main-header">
+						<div class="main-header-logo">
+							<!-- Logo Header -->
+							<div class="logo-header" data-background-color="dark">
+								<a href="/" class="logo">
+									<img
+										src="/assets/img/base/logo.png"
+										alt="navbar brand"
+										class="navbar-brand"
+										height="20"
+									/>
+								</a>
+								<div class="nav-toggle">
+									<button class="btn btn-toggle toggle-sidebar">
+										<i class="gg-menu-right"></i>
+									</button>
+									<button class="btn btn-toggle sidenav-toggler">
+										<i class="gg-menu-left"></i>
+									</button>
+								</div>
+								<button class="topbar-toggler more">
+									<i class="gg-more-vertical-alt"></i>
+								</button>
+							</div>
+							<!-- End Logo Header -->
+						</div>
+						<!-- Navbar Header -->
+						<nav
+							class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
+						>
+							<div class="container-fluid">
+								<nav
+									class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
+								>
+									<div class="input-group"></div>
+								</nav>
+							</div>
+						</nav>
+						<!-- End Navbar -->
+					</div>
+					<div class="container">
+						{ children... }
+					</div>
+					<footer class="footer">
+						<div class="container-fluid d-flex justify-content-between">
+							<div class="copyright">
+								2024, Load Monitor
+							</div>
+							<div>
+								made with ThemeKita
+							</div>
+						</div>
+					</footer>
+				</div>
+			</div>
+			<!--   Core JS Files   -->
+			<script src="/assets/js/core/jquery-3.7.1.min.js"></script>
+			<script src="/assets/js/core/popper.min.js"></script>
+			<script src="/assets/js/core/bootstrap.min.js"></script>
+			<!-- jQuery Scrollbar -->
+			<script src="/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+			<!-- Bootstrap Notify -->
+			<script src="/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+			<!-- Theme JS -->
+			<script src="/assets/js/theme.min.js"></script>
+		</body>
+	</html>
+}
+
+templ titleTag(title string) {
+	if title=="" {
+		<title>Load Monitor</title>
+	} else {
+		<title>{ title }</title>
+	}
+}
+
+templ descriptionTag(description string) {
+	if description=="" {
+		<meta content="Experiment Loading app with Gorutine workers and Job complexity"  name="description"/>
+	} else {
+		<meta content={ description } name="description"/>
+	}
+}
+
+templ keywordsTag(keywords []string) {
+	if len(keywords)==0 {
+		<meta content="load monitor, golang" name="keywords"/>
+	} else {
+		<meta content={ strings.Join(keywords, ", ") } name="keywords"/>
+	}
+}
