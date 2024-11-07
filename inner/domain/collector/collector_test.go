@@ -12,7 +12,7 @@ import (
 func TestCollector_AddJobs(t *testing.T) {
 	// Test case where we collect less than the desired number of jobs
 	c := NewCollector(3)
-	jobChan := make(chan *job.Job)
+	jobChan := make(chan job.JobI)
 
 	// Start the collector in a separate goroutine
 	c.StartCollecting(jobChan)
@@ -35,15 +35,15 @@ func TestCollector_AddJobs(t *testing.T) {
 	// Retrieve last jobs and check order
 	lastJobs := c.GetLastJobs()
 	assert.Len(t, lastJobs, 3, "There should be 3 jobs")
-	assert.Equal(t, int64(1), int64(lastJobs[0].Complexity()), "First job complexity should be 1")
-	assert.Equal(t, int64(2), int64(lastJobs[1].Complexity()), "Second job complexity should be 2")
-	assert.Equal(t, int64(3), int64(lastJobs[2].Complexity()), "Third job complexity should be 3")
+	assert.Equal(t, int64(1), lastJobs[0].ComplexityInt(), "First job complexity should be 1")
+	assert.Equal(t, int64(2), lastJobs[1].ComplexityInt(), "Second job complexity should be 2")
+	assert.Equal(t, int64(3), lastJobs[2].ComplexityInt(), "Third job complexity should be 3")
 }
 
 func TestCollector_OverflowJobs(t *testing.T) {
 	// Test case where the number of jobs exceeds the collector's capacity
 	c := NewCollector(3)
-	jobChan := make(chan *job.Job)
+	jobChan := make(chan job.JobI)
 
 	// Start the collector in a separate goroutine
 	c.StartCollecting(jobChan)
@@ -68,15 +68,15 @@ func TestCollector_OverflowJobs(t *testing.T) {
 	// Retrieve last jobs and check order (should be 3, 4, 5)
 	lastJobs := c.GetLastJobs()
 	assert.Len(t, lastJobs, 3, "There should be 3 jobs")
-	assert.Equal(t, int64(3), int64(lastJobs[0].Complexity()), "First job complexity should be 3")
-	assert.Equal(t, int64(4), int64(lastJobs[1].Complexity()), "Second job complexity should be 4")
-	assert.Equal(t, int64(5), int64(lastJobs[2].Complexity()), "Third job complexity should be 5")
+	assert.Equal(t, int64(3), lastJobs[0].ComplexityInt(), "First job complexity should be 3")
+	assert.Equal(t, int64(4), lastJobs[1].ComplexityInt(), "Second job complexity should be 4")
+	assert.Equal(t, int64(5), lastJobs[2].ComplexityInt(), "Third job complexity should be 5")
 }
 
 func TestCollector_GetCountAndCountSt(t *testing.T) {
 	// Test case for retrieving count in both int64 and string formats
 	c := NewCollector(3)
-	jobChan := make(chan *job.Job)
+	jobChan := make(chan job.JobI)
 
 	// Start the collector in a separate goroutine
 	go c.StartCollecting(jobChan)
@@ -101,7 +101,7 @@ func TestCollector_GetCountAndCountSt(t *testing.T) {
 func TestCollector_SumOfComplexitySt(t *testing.T) {
 	// Test case for retrieving the sum of complexities as a string
 	c := NewCollector(3)
-	jobChan := make(chan *job.Job)
+	jobChan := make(chan job.JobI)
 
 	// Start the collector in a separate goroutine
 	go c.StartCollecting(jobChan)

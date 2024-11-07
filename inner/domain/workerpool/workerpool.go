@@ -9,8 +9,8 @@ import (
 )
 
 type WorkerPool struct {
-	jobQueue      <-chan *job.Job
-	jobProccessed chan *job.Job
+	jobQueue      <-chan job.JobI
+	jobProccessed chan job.JobI
 	workers       int
 	quit          chan bool
 	wg            sync.WaitGroup
@@ -18,8 +18,8 @@ type WorkerPool struct {
 	ctx           context.Context
 }
 
-func NewWorkerPool(ctx context.Context, workerCount int, jobChan <-chan *job.Job) (*WorkerPool, <-chan *job.Job) {
-	jp := make(chan *job.Job)
+func NewWorkerPool(ctx context.Context, workerCount int, jobChan <-chan job.JobI) (*WorkerPool, <-chan job.JobI) {
+	jp := make(chan job.JobI)
 	pool := &WorkerPool{
 		jobQueue:      jobChan,
 		jobProccessed: jp,

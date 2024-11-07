@@ -66,12 +66,14 @@ func main() {
 	engine.POST("/loadmanager-workers", loadManagerHandler.HandleWorkers)
 
 	// page to monitor collector of last finished jobs, jobs quantity and accumulated complexity for finished jobs
-	engine.GET("/jobmonitor", loadManagerHandler.HandlePage)
+	//engine.GET("/jobmonitor", )
 	engine.Run(":8085")
 
 	cancel() // TODO add to graceful shutdown
 
 	//TODO: MAIN
-	// refactor to JobI interface
-	// with all public methods??
+	// DONE // refactor to JobI interface	// with all public methods??
+	// config with default/start options
+	// config path in env for prod/dev
+	// logger with prod/dev
 }
