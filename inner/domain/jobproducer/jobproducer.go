@@ -9,11 +9,12 @@ import (
 
 type JobProducer struct {
 	jobComplexity int64
+	jobMemoryLoad int64
 	mu            sync.Mutex
 }
 
-func New(jobComplexity int64) *JobProducer {
-	return &JobProducer{jobComplexity: jobComplexity, mu: sync.Mutex{}}
+func New(jobComplexity int64, jobMemoryLoad int64) *JobProducer {
+	return &JobProducer{jobComplexity: jobComplexity, jobMemoryLoad: jobMemoryLoad, mu: sync.Mutex{}}
 }
 
 func (jp *JobProducer) Start(ctx context.Context) <-chan *job.Job {
@@ -26,7 +27,7 @@ func (jp *JobProducer) Start(ctx context.Context) <-chan *job.Job {
 				return
 			default:
 				jp.mu.Lock()
-				res <- job.NewJob(jpInner.jobComplexity)
+				res <- job.NewJob(jpInner.jobComplexity, jpInner.jobMemoryLoad)
 				jp.mu.Unlock()
 			}
 		}
@@ -38,4 +39,10 @@ func (jp *JobProducer) SetComplexity(newComplexity int64) {
 	jp.mu.Lock()
 	defer jp.mu.Unlock()
 	jp.jobComplexity = newComplexity
+}
+
+func (jp *JobProducer) SetMemoryLoad(newMemoryLoad int64) {
+	jp.mu.Lock()
+	defer jp.mu.Unlock()
+	jp.jobMemoryLoad = newMemoryLoad
 }

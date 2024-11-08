@@ -26,7 +26,7 @@ func NewWorkerPool(ctx context.Context, workerCount int, jobChan <-chan *job.Job
 	return pool, jp
 }
 
-// Worker that consumes jobs
+// worker that consumes jobs
 func (p *WorkerPool) worker(ctx context.Context) {
 	for {
 		select {
