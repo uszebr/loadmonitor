@@ -5,4 +5,5 @@ type BaseParam struct {
 	Title       string
 	Keywords    []string
 	Description string
+	HTMX        bool
 }
