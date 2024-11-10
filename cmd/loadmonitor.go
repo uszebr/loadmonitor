@@ -8,6 +8,7 @@ import (
 
 	// "time"
 	"github.com/gin-gonic/gin"
+	"github.com/uszebr/loadmonitor/inner/domain/collector"
 	"github.com/uszebr/loadmonitor/inner/domain/jobproducer"
 	"github.com/uszebr/loadmonitor/inner/domain/workerpool"
 	"github.com/uszebr/loadmonitor/inner/handler/loadmanagerhandl"
@@ -24,11 +25,14 @@ func main() {
 
 	wPool, proccessedJobx := workerpool.NewWorkerPool(ctx, 3, jobQueue)
 
-	go func() {
-		for job := range proccessedJobx {
-			fmt.Printf("D[%s] Complex: [%v] MemoryLoad: [%v] Status: [%v] Duration: [%v] \n", job.Id().String(), job.Complexity(), job.MemoryLoad(), job.Status(), job.JobDuration())
-		}
-	}()
+	// go func() {
+	// 	for job := range proccessedJobx {
+	// 		fmt.Printf("D[%s] Complex: [%v] MemoryLoad: [%v] Status: [%v] Duration: [%v] \n", job.Id().String(), job.Complexity(), job.MemoryLoad(), job.Status(), job.JobDuration())
+	// 	}
+	// }()
+
+	collector := collector.NewCollector(20)
+	collector.StartCollecting(proccessedJobx)
 
 	// Adjust workers dynamically
 	// time.Sleep(6 * time.Second)
@@ -53,11 +57,21 @@ func main() {
 	engine := gin.Default()
 	engine.Static("/assets", "./assets")
 	loadManagerHandler := loadmanagerhandl.New(jProducer, wPool)
+	//page to change load/workers
 	engine.GET("/loadmanager", loadManagerHandler.HandlePage)
 
+	// endpoint to change Load, Memory Load
 	engine.POST("/loadmanager-producer", loadManagerHandler.HandleProducer)
+	// endpoint to change Workers quantity
+	engine.POST("/loadmanager-workers", loadManagerHandler.HandleWorkers)
+
+	// page to monitor collector of last finished jobs, jobs quantity and accumulated complexity for finished jobs
+	engine.GET("/jobmonitor", loadManagerHandler.HandlePage)
 	engine.Run(":8085")
 
 	cancel() // TODO add to graceful shutdown
 
+	//TODO: MAIN
+	// refactor to JobI interface
+	// with all public methods??
 }

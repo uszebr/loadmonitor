@@ -15,6 +15,7 @@ type WorkerPool struct {
 	quit          chan bool
 	wg            sync.WaitGroup
 	mu            sync.RWMutex
+	ctx           context.Context
 }
 
 func NewWorkerPool(ctx context.Context, workerCount int, jobChan <-chan *job.Job) (*WorkerPool, <-chan *job.Job) {
@@ -23,8 +24,9 @@ func NewWorkerPool(ctx context.Context, workerCount int, jobChan <-chan *job.Job
 		jobQueue:      jobChan,
 		jobProccessed: jp,
 		quit:          make(chan bool),
+		ctx:           ctx,
 	}
-	pool.SetWorkerCount(ctx, workerCount)
+	pool.SetWorkerCount(workerCount)
 	return pool, jp
 }
 
@@ -47,7 +49,7 @@ func (p *WorkerPool) worker(ctx context.Context) {
 }
 
 // SetWorkerCount dynamically adjusts the number of workers
-func (p *WorkerPool) SetWorkerCount(ctx context.Context, count int) {
+func (p *WorkerPool) SetWorkerCount(count int) {
 	currentWorkers := p.Workers()
 	p.mu.Lock()
 	defer p.mu.Unlock()
@@ -56,7 +58,7 @@ func (p *WorkerPool) SetWorkerCount(ctx context.Context, count int) {
 			p.wg.Add(1)
 			go func() {
 				defer p.wg.Done()
-				p.worker(ctx)
+				p.worker(p.ctx)
 			}()
 		}
 	} else if count < currentWorkers {

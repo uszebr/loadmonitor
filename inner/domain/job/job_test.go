@@ -9,15 +9,83 @@ import (
 )
 
 func TestNewJob(t *testing.T) {
-	// Test job creation with positive complexity and memory load
-	job := NewJob(5, 1024)
+	// Define table of test cases with different complexity and memory load values
+	tests := []struct {
+		name               string
+		complexity         int64
+		memoryLoad         int64
+		expectedComplexity complexity
+		expectedMemoryLoad complexity
+	}{
+		{
+			name:               "Moderate complexity and memory load",
+			complexity:         5,
+			memoryLoad:         1024,
+			expectedComplexity: complexity(5),
+			expectedMemoryLoad: complexity(1024),
+		},
+		{
+			name:               "Minimum complexity and memory load",
+			complexity:         0,
+			memoryLoad:         0,
+			expectedComplexity: complexity(0),
+			expectedMemoryLoad: complexity(0),
+		},
+		{
+			name:               "High complexity and memory load",
+			complexity:         100,
+			memoryLoad:         2048,
+			expectedComplexity: complexity(100),
+			expectedMemoryLoad: complexity(2048),
+		},
+		{
+			name:               "Large complexity and memory load",
+			complexity:         12345,
+			memoryLoad:         987654,
+			expectedComplexity: complexity(12345),
+			expectedMemoryLoad: complexity(987654),
+		},
+		{
+			name:               "Negative complexity (should be 0)",
+			complexity:         -5,
+			memoryLoad:         1024,
+			expectedComplexity: complexity(0),
+			expectedMemoryLoad: complexity(1024),
+		},
+		{
+			name:               "Negative memory load (should be 0)",
+			complexity:         5,
+			memoryLoad:         -1024,
+			expectedComplexity: complexity(5),
+			expectedMemoryLoad: complexity(0),
+		},
+	}
 
-	assert.NotNil(t, job)
-	assert.Equal(t, NEW, job.Status())
-	assert.Equal(t, complexity(5), job.Complexity())
-	assert.Equal(t, complexity(1024), job.memoryLoad)
-	assert.Empty(t, job.memoryLoader)           // memoryLoader should be empty initially
-	assert.Equal(t, 36, len(job.Id().String())) // UUID length should be 36 characters
+	// Iterate over test cases
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Create a new job with the given complexity and memory load
+			job := NewJob(tt.complexity, tt.memoryLoad)
+
+			// Assert that the job is not nil
+			assert.NotNil(t, job)
+
+			// Assert the job's status is NEW
+			assert.Equal(t, NEW, job.Status())
+
+			// Assert that the job's complexity matches the expected value
+			assert.Equal(t, tt.expectedComplexity, job.Complexity())
+
+			// Assert that the job's memory load matches the expected value
+			assert.Equal(t, tt.expectedMemoryLoad, job.MemoryLoad())
+
+			// Assert that the memory loader is empty initially
+			assert.Empty(t, job.memoryLoader)
+
+			// Assert that the UUID length is correct (36 characters)
+			assert.Equal(t, 36, len(job.Id().String()))
+		})
+	}
 }
 
 func TestJobDo_CompletedSuccessfully(t *testing.T) {

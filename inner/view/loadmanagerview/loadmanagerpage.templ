@@ -1,22 +1,21 @@
 package loadmanagerview
 
 import (
-	"github.com/uszebr/loadmonitor/inner/domain/workerpool"
 	"github.com/uszebr/loadmonitor/inner/view/baseview"
 )
 
-templ LoadManagerPage(jobProducerFormData JobProducerFormData, workerPool *workerpool.WorkerPool) {
+templ LoadManagerPage(jobProducerFormData JobProducerFormData, workerPoolFormData WorkerPoolFormData) {
 	@baseview.BasePage(baseview.BaseParam{Title: "Load Manager - Changing Job complexity and quantity of workers", HTMX: true}) {
 		<div class="page-inner">
 			<div class="page-header">
 				<h4 class="page-title">Load Manager</h4>
 			</div>
-			<div class="page-category">Inner page content goes here</div>
+			<div class="page-category">Managing load value</div>
 			<div class="row">
 				<div id="producer-settings" class="col-md-6">
 					<div class="card">
 						<div class="card-body">
-							<h5>Workers Pool Settings</h5>
+							<h5>Job Producer</h5>
 							@ProducerForm(jobProducerFormData)
 						</div>
 					</div>
@@ -24,8 +23,8 @@ templ LoadManagerPage(jobProducerFormData JobProducerFormData, workerPool *worke
 				<div class="col-md-6">
 					<div class="card">
 						<div class="card-body">
-							<h5>Workers Pool Settings</h5>
-							@WorkerForm(workerPool)
+							<h5>Workers Pool</h5>
+							@WorkerForm(workerPoolFormData)
 						</div>
 					</div>
 				</div>
@@ -36,38 +35,49 @@ templ LoadManagerPage(jobProducerFormData JobProducerFormData, workerPool *worke
 
 templ ProducerForm(jobProducerFormData JobProducerFormData) {
 	<form hx-post="/loadmanager-producer" hx-swap="outerHTML">
-
+		// <div id="success-indicator">
+		// 	// TODO fadeout icon.. server?? ok? checkmark? arrow up/down?
+		// </div>
 		<div class={ "form-group", templ.KV("has-error has-feedback", jobProducerFormData.ErrorComplexity!="") }>
 			<label for="complexity">Job Complexity</label>
 			<div class="input-group mb-3">
 				<span class="input-group-text" id="current-complexity">{ jobProducerFormData.JobComplexitySt() }</span>
-				<input type="number" class="form-control" id="complexity" value={ jobProducerFormData.JobComplexitySt() } aria-describedby="current-complexity"/>
+				<input type="number" class="form-control" name="complexity" id="complexity" value={ jobProducerFormData.JobComplexitySt() } aria-describedby="current-complexity"/>
 			</div>
 			if jobProducerFormData.ErrorComplexity!="" {
-				<div><small class="form-text text-muted">Please provide a valid informations.</small></div>
+				<div><small class="form-text text-muted">{ jobProducerFormData.ErrorComplexity }</small></div>
 			}
 		</div>
-		<div class="form-group">
+		<div class={ "form-group", templ.KV("has-error has-feedback", jobProducerFormData.ErrorMemoryLoad!="") }>
 			<label for="memory-load">Memory Load(bytes per job)</label>
 			<div class="input-group mb-3">
 				<span class="input-group-text" id="current-memory-load">{ jobProducerFormData.JobMemoryLoadSt() }</span>
-				<input type="number" class="form-control" id="memory-load" value={ jobProducerFormData.JobMemoryLoadSt() } aria-describedby="current-memory-load"/>
+				<input type="number" class="form-control" name="memory-load" id="memory-load" value={ jobProducerFormData.JobMemoryLoadSt() } aria-describedby="current-memory-load"/>
 			</div>
+			if jobProducerFormData.ErrorMemoryLoad!="" {
+				<div><small class="form-text text-muted">{ jobProducerFormData.ErrorMemoryLoad }</small></div>
+			}
 		</div>
-		<div class="card-action">
+		<div class="container">
 			<button type="submit" class="btn btn-success">Update Producer<img class="htmx-indicator" width="20px" src="/assets/img/spinner/bars.svg"/></button>
 		</div>
 	</form>
 }
 
-templ WorkerForm(workerPool *workerpool.WorkerPool) {
-	<form>
-	
-		<div class="form-group has-error has-feedback">
-			<label for="workers">Error Input</label>
-			<span class="input-group-text" id="current-memory-load">{ workerPool.WorkersSt() }</span>
-			<input type="text" id="workers" value="Error" class="form-control" aria-describedby="current-memory-load"/>
-			<small class="form-text text-muted">Please provide a valid informations.</small>
+templ WorkerForm(workerPoolFormData WorkerPoolFormData) {
+	<form  hx-post="/loadmanager-workers" hx-swap="outerHTML">
+		// <div id="success-indicator">
+		// 	// TODO fadeout icon.. server?? ok? checkmark? arrow up/down?
+		// </div>
+		<div class={ "form-group", templ.KV("has-error has-feedback", workerPoolFormData.ErrorWorkerQuantity!="") }>
+			<label for="workers">Workers quantity</label>
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="current-workers">{ workerPoolFormData.WorkersSt() }</span>
+				<input type="number" class="form-control" name="workers" id="workers" value={ workerPoolFormData.WorkersSt() } aria-describedby="current-workers"/>
+			</div>
+			if workerPoolFormData.ErrorWorkerQuantity!="" {
+				<div><small class="form-text text-muted">{ workerPoolFormData.ErrorWorkerQuantity}</small></div>
+			}
 		</div>
 		<div class="card-action">
 			<button type="submit" class="btn btn-success">Update Workers Pool<img class="htmx-indicator" width="20px" src="/assets/img/spinner/bars.svg"/></button>
