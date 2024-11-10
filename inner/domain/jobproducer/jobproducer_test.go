@@ -72,8 +72,8 @@ func TestJobProducer_Start(t *testing.T) {
 	select {
 	case job := <-jobChan:
 		// Assert that the job has the expected complexity and memory load
-		assert.Equal(t, int64(10), int64(job.Complexity()), "Job complexity should be 10")
-		assert.Equal(t, int64(1024), int64(job.MemoryLoad()), "Job memory load should be 1024")
+		assert.Equal(t, int64(10), job.ComplexityInt(), "Job complexity should be 10")
+		assert.Equal(t, int64(1024), job.MemoryLoadInt(), "Job memory load should be 1024")
 	case <-time.After(time.Millisecond * 150):
 		t.Fatal("Expected a job but did not receive one within the timeout")
 	}
@@ -98,8 +98,8 @@ func TestJobProducer_JobProducerStop(t *testing.T) {
 
 	// Ensure that the job channel is closed and no jobs are received after cancellation
 	select {
-	case job,ok := <-jobChan:
-		if ok{
+	case job, ok := <-jobChan:
+		if ok {
 			t.Fatal("Expected no job, but received a job:", job)
 		}
 	case <-time.After(time.Millisecond * 100):

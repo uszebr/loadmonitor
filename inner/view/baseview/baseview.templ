@@ -3,19 +3,66 @@ package baseview
 import "strings"
 
 templ BasePage(param BaseParam) {
-	@baseFive(param){ 
+	@baseFive(param) {
 		<div class="wrapper">
-				<!-- Sidebar -->
-				<div class="sidebar" data-background-color="dark">
-					<div class="sidebar-logo">
+			<!-- Sidebar -->
+			<div class="sidebar" data-background-color="dark">
+				<div class="sidebar-logo">
+					<!-- Logo Header -->
+					<div class="logo-header" data-background-color="dark">
+						<a href="/" class="logo text-light">
+							<img
+								src="/assets/img/base/logo.png"
+								alt="load manager"
+								height="20"
+							/> <span class="fw-bold p-2">Load Monitor</span>
+						</a>
+						<div class="nav-toggle">
+							<button class="btn btn-toggle toggle-sidebar">
+								<i class="gg-menu-right"></i>
+							</button>
+							<button class="btn btn-toggle sidenav-toggler">
+								<i class="gg-menu-left"></i>
+							</button>
+						</div>
+						<button class="topbar-toggler more">
+							<i class="gg-more-vertical-alt"></i>
+						</button>
+					</div>
+					<!-- End Logo Header -->
+				</div>
+				<div class="sidebar-wrapper scrollbar scrollbar-inner">
+					<div class="sidebar-content">
+						<ul class="nav nav-secondary">
+							<li class="nav-item">
+								<a href="/loadmanager">
+									<i class="fas fa-pen-square"></i>
+									<p>Load Manager</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="/jobmonitor">
+									<i class="fas fa-desktop"></i>
+									<p>Jobs Monitor</p>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- End Sidebar -->
+			<div class="main-panel">
+				<div class="main-header">
+					<div class="main-header-logo">
 						<!-- Logo Header -->
 						<div class="logo-header" data-background-color="dark">
-							<a href="/" class="logo text-light">
+							<a href="/" class="logo">
 								<img
 									src="/assets/img/base/logo.png"
-									alt="load manager"
+									alt="navbar brand"
+									class="navbar-brand"
 									height="20"
-								/> <span class="fw-bold p-2">Load Monitor</span>
+								/>
 							</a>
 							<div class="nav-toggle">
 								<button class="btn btn-toggle toggle-sidebar">
@@ -31,83 +78,36 @@ templ BasePage(param BaseParam) {
 						</div>
 						<!-- End Logo Header -->
 					</div>
-					<div class="sidebar-wrapper scrollbar scrollbar-inner">
-						<div class="sidebar-content">
-							<ul class="nav nav-secondary">
-								<li class="nav-item">
-									<a href="/">
-										<i class="fas fa-desktop"></i>
-										<p>Monitor</p>
-									</a>
-								</li>
-								<li class="nav-item">
-									<a href="/loadmanager">
-										<i class="fas fa-pen-square"></i>
-										<p>Load Manager</p>
-									</a>
-								</li>
-							</ul>
+					<!-- Navbar Header -->
+					<nav
+						class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
+					>
+						<div class="container-fluid">
+							<nav
+								class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
+							>
+								<div class="input-group"></div>
+							</nav>
 						</div>
-					</div>
+					</nav>
+					<!-- End Navbar -->
 				</div>
-				<!-- End Sidebar -->
-				<div class="main-panel">
-					<div class="main-header">
-						<div class="main-header-logo">
-							<!-- Logo Header -->
-							<div class="logo-header" data-background-color="dark">
-								<a href="/" class="logo">
-									<img
-										src="/assets/img/base/logo.png"
-										alt="navbar brand"
-										class="navbar-brand"
-										height="20"
-									/>
-								</a>
-								<div class="nav-toggle">
-									<button class="btn btn-toggle toggle-sidebar">
-										<i class="gg-menu-right"></i>
-									</button>
-									<button class="btn btn-toggle sidenav-toggler">
-										<i class="gg-menu-left"></i>
-									</button>
-								</div>
-								<button class="topbar-toggler more">
-									<i class="gg-more-vertical-alt"></i>
-								</button>
-							</div>
-							<!-- End Logo Header -->
-						</div>
-						<!-- Navbar Header -->
-						<nav
-							class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
-						>
-							<div class="container-fluid">
-								<nav
-									class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
-								>
-									<div class="input-group"></div>
-								</nav>
-							</div>
-						</nav>
-						<!-- End Navbar -->
-					</div>
-					<div class="container">
-						{ children... }
-					</div>
-					<footer class="footer">
-						<div class="container-fluid d-flex justify-content-between">
-							<div class="copyright">
-								2024, Load Monitor
-							</div>
-							<div>
-								made with ThemeKita
-							</div>
-						</div>
-					</footer>
+				<div class="container">
+					{ children... }
 				</div>
-			</div>	
-	 }
+				<footer class="footer">
+					<div class="container-fluid d-flex justify-content-between">
+						<div class="copyright">
+							2024, Load Monitor
+						</div>
+						<div>
+							made with ThemeKita
+						</div>
+					</div>
+				</footer>
+			</div>
+		</div>
+	}
 }
 
 templ titleTag(title string) {
@@ -154,7 +154,7 @@ templ baseFive(param BaseParam) {
 			<link rel="stylesheet" href="/assets/css/theme.min.css"/>
 		</head>
 		<body>
-			{ children...}
+			{ children... }
 			<!--   Core JS Files   -->
 			<script src="/assets/js/core/jquery-3.7.1.min.js"></script>
 			<script src="/assets/js/core/popper.min.js"></script>

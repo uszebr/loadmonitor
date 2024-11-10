@@ -3,7 +3,6 @@ package loadmanagerhandl
 import (
 	"fmt"
 	"strconv"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uszebr/loadmonitor/inner/domain/jobproducer"
@@ -22,20 +21,17 @@ func New(jp *jobproducer.JobProducer, wp *workerpool.WorkerPool) LoadManagerHand
 	return LoadManagerHandler{jobProducer: jp, workerPool: wp}
 }
 
-func (h *LoadManagerHandler) HandlePage(c *gin.Context) {
+func (h LoadManagerHandler) HandlePage(c *gin.Context) {
 	// success set to false. To prevent showing Fade-Out icon when request is done(not implemented yet)
 	jobProducerFormData := loadmanagerview.JobProducerFormData{JobProducer: h.jobProducer, Success: false}
 	workerPoolFormData := loadmanagerview.WorkerPoolFormData{WorkerPool: h.workerPool, Success: false}
-	_ = ginutil.Render(c, 200, loadmanagerview.LoadManagerPage(jobProducerFormData, workerPoolFormData))
-	// TODO: log err here
+	err := ginutil.Render(c, 200, loadmanagerview.LoadManagerPage(jobProducerFormData, workerPoolFormData))
+	if err != nil {
+		fmt.Printf("Error Rendering: %v\n", err.Error())
+	}
 }
 
-func (h *LoadManagerHandler) HandleProducer(c *gin.Context) {
-
-	// TODO: DELETE
-	time.Sleep(3 * time.Second)
-	// TODO: DELETE^^^
-
+func (h LoadManagerHandler) HandleProducer(c *gin.Context) {
 	complexityForm := c.PostForm("complexity")
 	memoryLoadForm := c.PostForm("memory-load")
 	comlexity, memoryLoad, errComplexity, errMemoryLoad := validateProducerFormValues(complexityForm, memoryLoadForm)
@@ -47,8 +43,10 @@ func (h *LoadManagerHandler) HandleProducer(c *gin.Context) {
 	h.jobProducer.SetComplexity(int64(comlexity))
 	h.jobProducer.SetMemoryLoad(int64(memoryLoad))
 	jobProducerFormData := loadmanagerview.JobProducerFormData{JobProducer: h.jobProducer, Success: true, ErrorComplexity: "", ErrorMemoryLoad: ""}
-	_ = ginutil.Render(c, 200, loadmanagerview.ProducerForm(jobProducerFormData))
-	// TODO: log err here
+	err := ginutil.Render(c, 200, loadmanagerview.ProducerForm(jobProducerFormData))
+	if err != nil {
+		fmt.Printf("Error Rendering: %v\n", err.Error())
+	}
 }
 
 // validateProducerFormValues return issues(main or secondary) for all form inputs. Client can fix both
@@ -79,25 +77,23 @@ func validateProducerFormValues(complexitySt, memoryLoadSt string) (int, int, st
 	return comlexity, memoryLoad, errComplexity, errMemoryLoad
 }
 
-func (h *LoadManagerHandler) HandleWorkers(c *gin.Context) {
-
-	// TODO: DELETE
-	time.Sleep(3 * time.Second)
-	// TODO: DELETE^^^
-
+func (h LoadManagerHandler) HandleWorkers(c *gin.Context) {
 	workersForm := c.PostForm("workers")
 	workers, errWorkers := validateWorkersFormValues(workersForm)
 	if errWorkers != "" {
 		workerPoolFormData := loadmanagerview.WorkerPoolFormData{WorkerPool: h.workerPool, Success: false, ErrorWorkerQuantity: errWorkers}
-		_ = ginutil.Render(c, 200, loadmanagerview.WorkerForm(workerPoolFormData))
+		err := ginutil.Render(c, 200, loadmanagerview.WorkerForm(workerPoolFormData))
+		if err != nil {
+			fmt.Printf("Error Rendering: %v\n", err.Error())
+		}
 		return
 	}
-
 	h.workerPool.SetWorkerCount(workers)
-
 	workerPoolFormData := loadmanagerview.WorkerPoolFormData{WorkerPool: h.workerPool, Success: true, ErrorWorkerQuantity: ""}
-	_ = ginutil.Render(c, 200, loadmanagerview.WorkerForm(workerPoolFormData))
-	// TODO: log err here
+	err := ginutil.Render(c, 200, loadmanagerview.WorkerForm(workerPoolFormData))
+	if err != nil {
+		fmt.Printf("Error Rendering: %v\n", err.Error())
+	}
 }
 
 // validateWorkersFormValues return string instead of error just to consitancy(follow pattern in previous validator)

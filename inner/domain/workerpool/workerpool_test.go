@@ -19,7 +19,7 @@ func (m *MockJob) Do(ctx context.Context) {
 
 func TestNewWorkerPool(t *testing.T) {
 	ctx := context.Background()
-	jobChan := make(chan *job.Job, 10)
+	jobChan := make(chan job.JobI, 10)
 	workerCount := 3
 
 	// Create worker pool
@@ -34,7 +34,7 @@ func TestNewWorkerPool(t *testing.T) {
 
 func TestSetWorkerCount(t *testing.T) {
 	ctx := context.Background()
-	jobChan := make(chan *job.Job, 10)
+	jobChan := make(chan job.JobI, 10)
 	workerCount := 3
 
 	// Create worker pool

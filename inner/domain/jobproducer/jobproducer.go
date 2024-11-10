@@ -18,8 +18,8 @@ func New(jobComplexity int64, jobMemoryLoad int64) *JobProducer {
 	return &JobProducer{jobComplexity: jobComplexity, jobMemoryLoad: jobMemoryLoad, mu: sync.RWMutex{}}
 }
 
-func (jp *JobProducer) Start(ctx context.Context) <-chan *job.Job {
-	res := make(chan *job.Job)
+func (jp *JobProducer) Start(ctx context.Context) <-chan job.JobI {
+	res := make(chan job.JobI)
 	go func() {
 		defer close(res)
 		for {

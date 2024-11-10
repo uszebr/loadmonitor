@@ -1,0 +1,29 @@
+package jobmonitorview
+
+
+import (
+	"github.com/uszebr/loadmonitor/inner/view/baseview"
+    "github.com/uszebr/loadmonitor/inner/domain/collector"
+)
+
+templ JobMonitorPage(jobCollector *collector.Collector) {
+	@baseview.BasePage(baseview.BaseParam{Title: "Jobs Monitor - Jobs collector data", HTMX: true}) {
+		<div class="page-inner">
+			<div class="page-header">
+				<h4 class="page-title">Jobs Monitor</h4>
+			</div>
+			<div class="page-category">Finished Jobs Data</div>
+			<div class="row">
+				<div id="producer-settings" class="col-md-6">
+					<div class="card">
+						<div class="card-body">
+							<h5>Jobs data: {jobCollector.CountSt()} </h5>
+						 
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	}
+}
