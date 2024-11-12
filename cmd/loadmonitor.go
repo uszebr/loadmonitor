@@ -27,12 +27,6 @@ func main() {
 
 	wPool, proccessedJobx := workerpool.NewWorkerPool(ctx, 3, jobQueue)
 
-	// go func() {
-	// 	for job := range proccessedJobx {
-	// 		fmt.Printf("D[%s] Complex: [%v] MemoryLoad: [%v] Status: [%v] Duration: [%v] \n", job.Id().String(), job.Complexity(), job.MemoryLoad(), job.Status(), job.JobDuration())
-	// 	}
-	// }()
-
 	collector := collector.NewCollector(20)
 	collector.StartCollecting(proccessedJobx)
 
@@ -65,4 +59,5 @@ func main() {
 	// config path in env for prod/dev
 	// logger with prod/dev
 	// Multiplicator for job complexity store in config
+	// htmx separate update for done jobs quantity. Commulative complexity..
 }

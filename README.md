@@ -1,7 +1,9 @@
 # Load Monitor
 
 Emulating loading on GoLang using dynamic quantity of gorutines with dynamic amount of calculations for each with ability to change memory consumption for each gorutine. CleanUp memory after gorutine is finished. 
-Load Monitor can help with calculating appropriate quantity of gorutines for different workload and system.
+Load Monitor can help with calculating appropriate quantity of gorutines for different workload and system. 
+RunTime data monitor helps to understand total memory consumption, real quantity of gorutines created, GC cyles and memory stat.
+Watching updates in the Browser with Bootstrap, HTMX
 
 - Job: entity that loads proccessor and memory
   - complexity: level of proccessor load

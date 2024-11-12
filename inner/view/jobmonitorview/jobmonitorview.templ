@@ -9,19 +9,70 @@ import (
 	"strconv"
 )
 
-templ JobMonitorPage(jobCollector *collector.Collector) {
+templ JobMonitorPage() {
 	@baseview.BasePage(baseview.BaseParam{Title: "Jobs Monitor - Jobs collector data", HTMX: true}) {
 		<div class="page-inner">
 			<div class="page-header">
 				<h4 class="page-title">Jobs Monitor</h4>
 			</div>
 			<div class="page-category">Finished Jobs Data</div>
+			<!-- Card -->
+			<h3 class="fw-bold mb-3">Card</h3>
+			<div class="row">
+				<div class="col-sm-6 col-md-3">
+					<div class="card card-stats card-primary card-round">
+						<div class="card-body">
+							<div class="row">
+								<div class="col-5">
+									<div class="icon-big text-center">
+										<i class="far fa-check-circle"></i>
+									</div>
+								</div>
+								<div class="col-7 col-stats">
+									<div class="numbers">
+										<p class="card-category">Jobs Completed</p>
+										<div class="card-title h4" id="jobs-quantity"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-3">
+					<div class="card card-stats card-success card-round">
+						<div class="card-body">
+							<div class="row">
+								<div class="col-5">
+									<div class="icon-big text-center">
+										<i class="fas fa-luggage-cart"></i>
+									</div>
+								</div>
+								<div class="col-7 col-stats">
+									<div class="numbers">
+										<p class="card-category">Total Complexity</p>
+										<div id="total-complexity" class="card-title h4"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div hx-post="/jobmonitor" hx-trigger="every 1s"></div>
 			<div class="row">
 				<div class="col-md-12">
 					<div class="card">
-						<div class="card-body">
-							<div id="job-updates" hx-post="/jobmonitor" hx-trigger="every 1s"></div>
-						</div>
+						<table id="job-updates" class="table">
+							<thead>
+								<tr>
+									<th scope="col">#</th>
+									<th scope="col">Complexity</th>
+									<th scope="col">Memory</th>
+									<th scope="col">Duration</th>
+								</tr>
+							</thead>
+							<tbody id="table-jobs"></tbody>
+						</table>
 					</div>
 				</div>
 			</div>
@@ -30,20 +81,11 @@ templ JobMonitorPage(jobCollector *collector.Collector) {
 }
 
 templ JobMonitorPost(jobCollector *collector.Collector) {
-	<h5>Jobs Done: { jobCollector.CountSt() } Total Complexity: { jobCollector.SumOfComplexitySt() }</h5>
-	<table class="table">
-		<thead>
-			<tr>
-				<th scope="col">#</th>
-				<th scope="col">Complexity</th>
-				<th scope="col">Memory</th>
-				<th scope="col">Duration</th>
-			</tr>
-		</thead>
-		<tbody>
-			@jobsBlock(jobCollector.GetLastJobs())
-		</tbody>
-	</table>
+	<tbody id="job-updates" hx-swap-oob="innerHTML:#job-updates tbody">
+		@jobsBlock(jobCollector.GetLastJobs())
+	</tbody>
+	<div id="jobs-quantity" hx-swap-oob="innerHTML">{ jobCollector.CountSt() }</div>
+	<div id="total-complexity" hx-swap-oob="innerHTML">{ jobCollector.SumOfComplexitySt() }</div>
 }
 
 templ jobsBlock(jobs []job.JobI) {
@@ -65,7 +107,7 @@ templ jobEntity(job job.JobI) {
 }
 
 templ coloredIdPrefix(u uuid.UUID) {
-	<p ><i class={ "fas fa-microchip",red(u) }></i><strong>{ uuidutil.First4Symbols(u) }</strong></p>
+	<p><i class={ "fas fa-microchip",red(u) }></i><strong>{ uuidutil.First4Symbols(u) }</strong></p>
 }
 
 css red(u uuid.UUID) {

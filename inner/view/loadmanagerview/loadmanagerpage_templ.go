@@ -338,7 +338,7 @@ func WorkerForm(workerPoolFormData WorkerPoolFormData) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div><small class=\"form-text text-muted\">It takes time to stop/start workers.</small></div></div><div class=\"card-action\"><button type=\"submit\" class=\"btn btn-success\">Update Workers Pool<img class=\"htmx-indicator\" width=\"20px\" src=\"/assets/img/spinner/bars.svg\"></button></div></form>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div><small class=\"form-text text-muted\">It takes time to stop/start workers. Request finihes after quantity is up to date.</small></div></div><div class=\"card-action\"><button type=\"submit\" class=\"btn btn-success\">Update Workers Pool<img class=\"htmx-indicator\" width=\"20px\" src=\"/assets/img/spinner/bars.svg\"></button></div></form>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
