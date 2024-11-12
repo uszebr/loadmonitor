@@ -43,7 +43,7 @@ func BasePage(param BaseParam) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"wrapper\"><!-- Sidebar --><div class=\"sidebar\" data-background-color=\"dark\"><div class=\"sidebar-logo\"><!-- Logo Header --><div class=\"logo-header\" data-background-color=\"dark\"><a href=\"/\" class=\"logo text-light\"><img src=\"/assets/img/base/logo.png\" alt=\"load manager\" height=\"20\"> <span class=\"fw-bold p-2\">Load Monitor</span></a><div class=\"nav-toggle\"><button class=\"btn btn-toggle toggle-sidebar\"><i class=\"gg-menu-right\"></i></button> <button class=\"btn btn-toggle sidenav-toggler\"><i class=\"gg-menu-left\"></i></button></div><button class=\"topbar-toggler more\"><i class=\"gg-more-vertical-alt\"></i></button></div><!-- End Logo Header --></div><div class=\"sidebar-wrapper scrollbar scrollbar-inner\"><div class=\"sidebar-content\"><ul class=\"nav nav-secondary\"><li class=\"nav-item\"><a href=\"/loadmanager\"><i class=\"fas fa-pen-square\"></i><p>Load Manager</p></a></li><li class=\"nav-item\"><a href=\"/jobmonitor\"><i class=\"fas fa-desktop\"></i><p>Jobs Monitor</p></a></li></ul></div></div></div><!-- End Sidebar --><div class=\"main-panel\"><div class=\"main-header\"><div class=\"main-header-logo\"><!-- Logo Header --><div class=\"logo-header\" data-background-color=\"dark\"><a href=\"/\" class=\"logo\"><img src=\"/assets/img/base/logo.png\" alt=\"navbar brand\" class=\"navbar-brand\" height=\"20\"></a><div class=\"nav-toggle\"><button class=\"btn btn-toggle toggle-sidebar\"><i class=\"gg-menu-right\"></i></button> <button class=\"btn btn-toggle sidenav-toggler\"><i class=\"gg-menu-left\"></i></button></div><button class=\"topbar-toggler more\"><i class=\"gg-more-vertical-alt\"></i></button></div><!-- End Logo Header --></div><!-- Navbar Header --><nav class=\"navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom\"><div class=\"container-fluid\"><nav class=\"navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex\"><div class=\"input-group\"></div></nav></div></nav><!-- End Navbar --></div><div class=\"container\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"wrapper\"><!-- Sidebar --><div class=\"sidebar\" data-background-color=\"dark\"><div class=\"sidebar-logo\"><!-- Logo Header --><div class=\"logo-header\" data-background-color=\"dark\"><a href=\"/\" class=\"logo text-light\"><img src=\"/assets/img/base/logo.png\" alt=\"load manager\" height=\"20\"> <span class=\"fw-bold p-2\">Load Monitor</span></a><div class=\"nav-toggle\"><button class=\"btn btn-toggle toggle-sidebar\"><i class=\"gg-menu-right\"></i></button> <button class=\"btn btn-toggle sidenav-toggler\"><i class=\"gg-menu-left\"></i></button></div><button class=\"topbar-toggler more\"><i class=\"gg-more-vertical-alt\"></i></button></div><!-- End Logo Header --></div><div class=\"sidebar-wrapper scrollbar scrollbar-inner\"><div class=\"sidebar-content\"><ul class=\"nav nav-secondary\"><li class=\"nav-item\"><a href=\"/loadmanager\"><i class=\"fas fa-pen-square\"></i><p>Load Manager</p></a></li><li class=\"nav-item\"><a href=\"/jobmonitor\"><i class=\"fas fa-desktop\"></i><p>Jobs Monitor</p></a></li><li class=\"nav-item\"><a href=\"/runtimedata\"><i class=\"bi bi-watch\"></i><p>RunTime Data</p></a></li></ul></div></div></div><!-- End Sidebar --><div class=\"main-panel\"><div class=\"main-header\"><div class=\"main-header-logo\"><!-- Logo Header --><div class=\"logo-header\" data-background-color=\"dark\"><a href=\"/\" class=\"logo\"><img src=\"/assets/img/base/logo.png\" alt=\"navbar brand\" class=\"navbar-brand\" height=\"20\"></a><div class=\"nav-toggle\"><button class=\"btn btn-toggle toggle-sidebar\"><i class=\"gg-menu-right\"></i></button> <button class=\"btn btn-toggle sidenav-toggler\"><i class=\"gg-menu-left\"></i></button></div><button class=\"topbar-toggler more\"><i class=\"gg-more-vertical-alt\"></i></button></div><!-- End Logo Header --></div><!-- Navbar Header --><!-- End Navbar --></div><div class=\"container\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -99,7 +99,7 @@ func titleTag(title string) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/baseview/baseview.templ`, Line: 117, Col: 16}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/baseview/baseview.templ`, Line: 123, Col: 16}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -151,7 +151,7 @@ func baseFive(param BaseParam) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<link href=\"/assets/img/icon/favicon.png\" rel=\"icon\" type=\"image/x-icon\"><link href=\"/assets/img/icon/apple-touch-icon.png\" rel=\"apple-touch-icon\"><!-- Fonts and icons --><script src=\"/assets/js/plugin/webfont/webfont.min.js\"></script><script>\n                WebFont.load({\n                    google: { families: [\"Public Sans:300,400,500,600,700\"] },\n                    custom: {\n                    families: [\n                        \"Font Awesome 5 Solid\",\n                        \"Font Awesome 5 Regular\",\n                        \"Font Awesome 5 Brands\",\n                        \"simple-line-icons\",\n                    ],\n                    urls: [\"/assets/css/fonts.min.css\"],\n                    },\n                    active: function () {\n                    sessionStorage.fonts = true;\n                    },\n                });\n            </script><!-- CSS Files --><link rel=\"stylesheet\" href=\"/assets/css/mystyles.css\"><link rel=\"stylesheet\" href=\"/assets/css/bootstrap.min.css\"><link rel=\"stylesheet\" href=\"/assets/css/plugins.min.css\"><link rel=\"stylesheet\" href=\"/assets/css/theme.min.css\"></head><body>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<link href=\"/assets/img/icon/favicon.png\" rel=\"icon\" type=\"image/x-icon\"><link href=\"/assets/img/icon/apple-touch-icon.png\" rel=\"apple-touch-icon\"><!-- Fonts and icons --><link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css\"><script src=\"/assets/js/plugin/webfont/webfont.min.js\"></script><script>\n                WebFont.load({\n                    google: { families: [\"Public Sans:300,400,500,600,700\"] },\n                    custom: {\n                    families: [\n                        \"Font Awesome 5 Solid\",\n                        \"Font Awesome 5 Regular\",\n                        \"Font Awesome 5 Brands\",\n                        \"simple-line-icons\",\n                    ],\n                    urls: [\"/assets/css/fonts.min.css\"],\n                    },\n                    active: function () {\n                    sessionStorage.fonts = true;\n                    },\n                });\n            </script><!-- CSS Files --><link rel=\"stylesheet\" href=\"/assets/css/mystyles.css\"><link rel=\"stylesheet\" href=\"/assets/css/bootstrap.min.css\"><link rel=\"stylesheet\" href=\"/assets/css/plugins.min.css\"><link rel=\"stylesheet\" href=\"/assets/css/theme.min.css\"></head><body>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -209,7 +209,7 @@ func descriptionTag(description string) templ.Component {
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(description)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/baseview/baseview.templ`, Line: 177, Col: 29}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/baseview/baseview.templ`, Line: 186, Col: 29}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -258,7 +258,7 @@ func keywordsTag(keywords []string) templ.Component {
 			var templ_7745c5c3_Var9 string
 			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(strings.Join(keywords, ", "))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/baseview/baseview.templ`, Line: 185, Col: 46}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/baseview/baseview.templ`, Line: 194, Col: 46}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 			if templ_7745c5c3_Err != nil {

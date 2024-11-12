@@ -41,7 +41,7 @@ templ ProducerForm(jobProducerFormData JobProducerFormData) {
 		<div class={ "form-group", templ.KV("has-error has-feedback", jobProducerFormData.ErrorComplexity!="") }>
 			<label for="complexity">Job Complexity</label>
 			<div class="input-group mb-3">
-				<span class="input-group-text" id="current-complexity">{ jobProducerFormData.JobComplexitySt() }</span>
+				<span class="input-group-text" id="current-complexity">current: { jobProducerFormData.JobComplexitySt() }</span>
 				<input type="number" class="form-control" name="complexity" id="complexity" value={ jobProducerFormData.JobComplexitySt() } aria-describedby="current-complexity"/>
 			</div>
 			if jobProducerFormData.ErrorComplexity!="" {
@@ -51,7 +51,7 @@ templ ProducerForm(jobProducerFormData JobProducerFormData) {
 		<div class={ "form-group", templ.KV("has-error has-feedback", jobProducerFormData.ErrorMemoryLoad!="") }>
 			<label for="memory-load">Memory Load(bytes per job)</label>
 			<div class="input-group mb-3">
-				<span class="input-group-text" id="current-memory-load">{ jobProducerFormData.JobMemoryLoadSt() }</span>
+				<span class="input-group-text" id="current-memory-load">current: { jobProducerFormData.JobMemoryLoadSt() }</span>
 				<input type="number" class="form-control" name="memory-load" id="memory-load" value={ jobProducerFormData.JobMemoryLoadSt() } aria-describedby="current-memory-load"/>
 			</div>
 			if jobProducerFormData.ErrorMemoryLoad!="" {
@@ -72,12 +72,13 @@ templ WorkerForm(workerPoolFormData WorkerPoolFormData) {
 		<div class={ "form-group", templ.KV("has-error has-feedback", workerPoolFormData.ErrorWorkerQuantity!="") }>
 			<label for="workers">Workers quantity</label>
 			<div class="input-group mb-3">
-				<span class="input-group-text" id="current-workers">{ workerPoolFormData.WorkersSt() }</span>
+				<span class="input-group-text" id="current-workers">current: { workerPoolFormData.WorkersSt() }</span>
 				<input type="number" class="form-control" name="workers" id="workers" value={ workerPoolFormData.WorkersSt() } aria-describedby="current-workers"/>
 			</div>
 			if workerPoolFormData.ErrorWorkerQuantity!="" {
 				<div><small class="form-text text-muted">{ workerPoolFormData.ErrorWorkerQuantity}</small></div>
 			}
+			<div><small class="form-text text-muted">It takes time to stop/start workers.</small></div>
 		</div>
 		<div class="card-action">
 			<button type="submit" class="btn btn-success">Update Workers Pool<img class="htmx-indicator" width="20px" src="/assets/img/spinner/bars.svg"/></button>

@@ -118,14 +118,14 @@ func ProducerForm(jobProducerFormData JobProducerFormData) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><label for=\"complexity\">Job Complexity</label><div class=\"input-group mb-3\"><span class=\"input-group-text\" id=\"current-complexity\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><label for=\"complexity\">Job Complexity</label><div class=\"input-group mb-3\"><span class=\"input-group-text\" id=\"current-complexity\">current: ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(jobProducerFormData.JobComplexitySt())
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/loadmanagerview/loadmanagerpage.templ`, Line: 44, Col: 98}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/loadmanagerview/loadmanagerpage.templ`, Line: 44, Col: 107}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -189,14 +189,14 @@ func ProducerForm(jobProducerFormData JobProducerFormData) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><label for=\"memory-load\">Memory Load(bytes per job)</label><div class=\"input-group mb-3\"><span class=\"input-group-text\" id=\"current-memory-load\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><label for=\"memory-load\">Memory Load(bytes per job)</label><div class=\"input-group mb-3\"><span class=\"input-group-text\" id=\"current-memory-load\">current: ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var11 string
 		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(jobProducerFormData.JobMemoryLoadSt())
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/loadmanagerview/loadmanagerpage.templ`, Line: 54, Col: 99}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/loadmanagerview/loadmanagerpage.templ`, Line: 54, Col: 108}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 		if templ_7745c5c3_Err != nil {
@@ -289,14 +289,14 @@ func WorkerForm(workerPoolFormData WorkerPoolFormData) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><label for=\"workers\">Workers quantity</label><div class=\"input-group mb-3\"><span class=\"input-group-text\" id=\"current-workers\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><label for=\"workers\">Workers quantity</label><div class=\"input-group mb-3\"><span class=\"input-group-text\" id=\"current-workers\">current: ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var17 string
 		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(workerPoolFormData.WorkersSt())
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/loadmanagerview/loadmanagerpage.templ`, Line: 75, Col: 88}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inner/view/loadmanagerview/loadmanagerpage.templ`, Line: 75, Col: 97}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 		if templ_7745c5c3_Err != nil {
@@ -338,7 +338,7 @@ func WorkerForm(workerPoolFormData WorkerPoolFormData) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"card-action\"><button type=\"submit\" class=\"btn btn-success\">Update Workers Pool<img class=\"htmx-indicator\" width=\"20px\" src=\"/assets/img/spinner/bars.svg\"></button></div></form>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div><small class=\"form-text text-muted\">It takes time to stop/start workers.</small></div></div><div class=\"card-action\"><button type=\"submit\" class=\"btn btn-success\">Update Workers Pool<img class=\"htmx-indicator\" width=\"20px\" src=\"/assets/img/spinner/bars.svg\"></button></div></form>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

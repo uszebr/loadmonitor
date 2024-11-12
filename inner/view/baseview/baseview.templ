@@ -46,6 +46,12 @@ templ BasePage(param BaseParam) {
 									<p>Jobs Monitor</p>
 								</a>
 							</li>
+							<li class="nav-item">
+								<a href="/runtimedata">
+									<i class="bi bi-watch"></i>
+									<p>RunTime Data</p>
+								</a>
+							</li>
 						</ul>
 					</div>
 				</div>
@@ -79,17 +85,17 @@ templ BasePage(param BaseParam) {
 						<!-- End Logo Header -->
 					</div>
 					<!-- Navbar Header -->
-					<nav
-						class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
-					>
-						<div class="container-fluid">
-							<nav
-								class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
-							>
-								<div class="input-group"></div>
-							</nav>
-						</div>
-					</nav>
+					// <nav
+					// 	class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
+					// >
+					// 	<div class="container-fluid">
+					// 		<nav
+					// 			class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
+					// 		>
+					// 			<div class="input-group"></div>
+					// 		</nav>
+					// 	</div>
+					// </nav>
 					<!-- End Navbar -->
 				</div>
 				<div class="container">
@@ -128,7 +134,10 @@ templ baseFive(param BaseParam) {
 			@keywordsTag(param.Keywords)
 			<link href="/assets/img/icon/favicon.png" rel="icon" type="image/x-icon"/>
 			<link href="/assets/img/icon/apple-touch-icon.png" rel="apple-touch-icon"/>
+			
 			<!-- Fonts and icons -->
+			// bootstrap icons
+			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 			<script src="/assets/js/plugin/webfont/webfont.min.js"></script>
 			<script>
                 WebFont.load({

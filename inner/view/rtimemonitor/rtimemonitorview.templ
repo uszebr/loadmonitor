@@ -1,0 +1,195 @@
+package rtimemonitor
+
+import (
+	"github.com/uszebr/loadmonitor/inner/view/baseview"
+	"strconv"
+)
+
+//idea TODO: add heap and stack data
+type RunTimeData struct {
+	NumCpu       int
+	NumGorutines int
+	GoOs         string
+	GoArch       string
+	Version      string
+	//Mem
+	MemAlloc      uint64
+	MemTotalAlloc uint64
+	MemSys        uint64
+	//Gc
+	GcCycles    uint32
+	GcSys       uint64
+	GcNext      uint64
+	GcSinceLast float64
+}
+
+templ RuntimeMonitorPage(rtd RunTimeData) {
+	@baseview.BasePage(baseview.BaseParam{Title: "Go Runtime data", HTMX: false}) {
+		<div class="page-inner">
+			<div class="page-header">
+				<h4 class="page-title">Go RunTime Data</h4>
+			</div>
+			//<div class="page-category">some data updates</div>
+			<div class="row">
+				<!-- Card With Icon States Color -->
+				<div class="row">
+					<div class="col-sm-6 col-md-3">
+						<div class="card card-stats card-round">
+							<div class="card-body">
+								<div class="row">
+									<div class="col-5">
+										<div class="icon-big text-center">
+											<i class="bi bi-airplane-engines text-danger"></i>
+										</div>
+									</div>
+									<div class="col-7 col-stats">
+										<div class="numbers">
+											<p class="card-category">Os</p>
+											<h4 class="card-title">{ rtd.GoOs }</h4>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6 col-md-3">
+						<div class="card card-stats card-round">
+							<div class="card-body">
+								<div class="row">
+									<div class="col-5">
+										<div class="icon-big text-center">
+											<i class="bi bi-buildings text-success"></i>
+										</div>
+									</div>
+									<div class="col-7 col-stats">
+										<div class="numbers">
+											<p class="card-category">Arch</p>
+											<h4 class="card-title">{ rtd.GoArch }</h4>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6 col-md-3">
+						<div class="card card-stats card-round">
+							<div class="card-body">
+								<div class="row">
+									<div class="col-5">
+										<div class="icon-big text-center">
+											<i class="fa fa-microchip"></i>
+										</div>
+									</div>
+									<div class="col-7 col-stats">
+										<div class="numbers">
+											<p class="card-category">CPU</p>
+											<h4 class="card-title">{ strconv.Itoa(rtd.NumCpu) }</h4>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6 col-md-3">
+						<div class="card card-stats card-round">
+							<div class="card-body">
+								<div class="row">
+									<div class="col-5">
+										<div class="icon-big text-center">
+											<i class="bi bi-signpost-2 text-secondary"></i>
+										</div>
+									</div>
+									<div class="col-7 col-stats">
+										<div class="numbers">
+											<p class="card-category">GoRutines</p>
+											<h4 class="card-title">{ strconv.Itoa(rtd.NumGorutines) }</h4>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6 col-md-3">
+						<div class="card card-stats card-round">
+							<div class="card-body">
+								<div class="row">
+									<div class="col-5">
+										<div class="icon-big text-center">
+											<i class="bi bi-list-columns-reverse text-primary"></i>
+										</div>
+									</div>
+									<div class="col-7 col-stats">
+										<div class="numbers">
+											<p class="card-category">Runtime</p>
+											<h4 class="card-title">{ rtd.Version }</h4>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- MemStat -->
+					<h3 class="fw-bold mb-3">Memory Stat</h3>
+					<div class="row justify-content-center align-items-center mb-1">
+						<div class="col-md-5 ps-md-0">
+							<div class="card card-pricing">
+								<div class="card-header">
+									<h4 class="card-title">Memory</h4>
+									<div class="card-price">
+										<span class="price"><i class="bi bi-memory text-warning"></i></span>
+									</div>
+								</div>
+								<div class="card-body">
+									<ul class="specification-list">
+										<li>
+											<span class="name-specification">MemAlloc</span>
+											<span class="status-specification">{ strconv.Itoa(int(rtd.MemAlloc)) }</span>
+										</li>
+										<li>
+											<span class="name-specification">MemTotalAlloc</span>
+											<span class="status-specification">{ strconv.Itoa(int(rtd.MemTotalAlloc)) }</span>
+										</li>
+										<li>
+											<span class="name-specification">MemSys</span>
+											<span class="status-specification">{ strconv.Itoa(int(rtd.MemSys)) }</span>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-5 pe-md-0">
+							<div class="card card-pricing">
+								<div class="card-header">
+									<h4 class="card-title">Garbage Collector</h4>
+									<div class="card-price">
+										<span class="price"><i class="bi bi-recycle text-warning"></i></span>
+									</div>
+								</div>
+								<div class="card-body">
+									<ul class="specification-list">
+										<li>
+											<span class="name-specification">Cycles</span>
+											<span class="status-specification">{ strconv.Itoa(int(rtd.GcCycles)) }</span>
+										</li>
+										<li>
+											<span class="name-specification">Sys</span>
+											<span class="status-specification">{ strconv.Itoa(int(rtd.GcSys)) }</span>
+										</li>
+										<li>
+											<span class="name-specification">Next</span>
+											<span class="status-specification">{ strconv.Itoa(int(rtd.GcNext)) }</span>
+										</li>
+										<li>
+											<span class="name-specification">Since Last</span>
+											<span class="status-specification">{ strconv.Itoa(int(rtd.GcSinceLast)) }</span>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+}
