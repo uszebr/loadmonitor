@@ -6,9 +6,10 @@ import (
 	"sync/atomic"
 
 	"github.com/uszebr/loadmonitor/inner/domain/job"
+	"github.com/uszebr/loadmonitor/inner/domain/metric"
 )
 
-//idea TODO: implement Listener Notify patern for websocket/SSE/Console output
+// idea TODO: implement Listener Notify patern for websocket/SSE/Console output
 // Collector struct to collect last N *Job pointers from a channel safely with concurrency
 type Collector struct {
 	jobs            []job.JobI
@@ -16,13 +17,15 @@ type Collector struct {
 	count           atomic.Int64 // atomic to avoid data races
 	mu              sync.RWMutex
 	sumOfComplexity atomic.Int64 // atomic to avoid mutex on getter (faster)
+	metric          *metric.Metrics
 }
 
 // NewCollector initializes a Collector with a specified quantity
-func NewCollector(quantity int) *Collector {
+func NewCollector(quantity int, metric *metric.Metrics) *Collector {
 	return &Collector{
 		jobs:     make([]job.JobI, 0, quantity),
 		quantity: quantity,
+		metric: metric,
 	}
 }
 
@@ -45,6 +48,7 @@ func (c *Collector) collect(jobChan <-chan job.JobI) {
 		fmt.Printf("D[%s] Complex: [%v] MemoryLoad: [%v] Status: [%v] Duration: [%v] \n", job.Id().String(), job.ComplexityInt(), job.MemoryLoadInt(), job.Status(), job.JobDuration())
 		c.mu.Unlock()
 		c.count.Add(1)
+		
 		c.sumOfComplexity.Add(job.ComplexityInt())
 	}
 }

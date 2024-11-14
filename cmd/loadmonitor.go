@@ -1,33 +1,47 @@
 package main
 
 import (
-	// "context"
-
 	"context"
 	"fmt"
+	"time"
 
-	// "time"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+
 	"github.com/gin-gonic/gin"
 	"github.com/uszebr/loadmonitor/inner/domain/collector"
 	"github.com/uszebr/loadmonitor/inner/domain/jobproducer"
+	"github.com/uszebr/loadmonitor/inner/domain/metric"
 	"github.com/uszebr/loadmonitor/inner/domain/workerpool"
 	"github.com/uszebr/loadmonitor/inner/handler/jobmonitorhandl"
 	"github.com/uszebr/loadmonitor/inner/handler/loadmanagerhandl"
 	"github.com/uszebr/loadmonitor/inner/handler/runtimehandl"
-	// "github.com/uszebr/loadmonitor/inner/domain/workerpool"
+)
+
+const (
+	VERSION = "0.2" //TODO: move to config or env var
 )
 
 func main() {
 	fmt.Println("!!!!!!!!!!!!!!!Load Monitor started..")
 
+	//PROMETHEUS
+	promReg := prometheus.NewRegistry()
+	//Default metrics(memory usage cpu etc, loading)
+	//promReg.MustRegister(collectors.NewGoCollector())
+	m := metric.NewMetrics(promReg)
+	m.Info.With(prometheus.Labels{"version": VERSION}).Set(1)
+	promCustomHandler := promhttp.HandlerFor(promReg, promhttp.HandlerOpts{})
+
 	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel() // TODO add to graceful shutdown
 
 	jProducer := jobproducer.New(jobproducer.WithJobComplexity(50), jobproducer.WithMemoryLoad(10))
 	jobQueue := jProducer.Start(ctx)
 
 	wPool, proccessedJobx := workerpool.NewWorkerPool(ctx, 3, jobQueue)
 
-	collector := collector.NewCollector(20)
+	collector := collector.NewCollector(20, m)
 	collector.StartCollecting(proccessedJobx)
 
 	engine := gin.Default()
@@ -49,9 +63,29 @@ func main() {
 
 	rthandler := runtimehandl.New()
 	engine.GET("/runtimedata", rthandler.HandlePage)
-	engine.Run(":8085")
 
-	cancel() // TODO add to graceful shutdown
+	//prometheus router
+	enginePrometheus := gin.Default()
+	//engine.GET("/metrics", gin.WrapH(promhttp.Handler()))
+	enginePrometheus.GET("/metrics", gin.WrapH(promCustomHandler))
+	runtimeUpdater := metric.NewRuntimeUpdater(m, time.Second*2) //TODO: move to config.. or env.. time every
+	runtimeUpdater.StartUpdating(ctx)
+
+	// Start Load Monitor
+	go func() {
+		if err := engine.Run(":8085"); err != nil {
+			fmt.Printf("Monitor server failed: %v\n", err)
+		}
+	}()
+
+	// Start Prometheus metrics server using Gin on a separate port
+	go func() {
+		if err := enginePrometheus.Run(":8081"); err != nil {
+			fmt.Printf("Metrics server failed: %v\n", err)
+		}
+	}()
+
+	select {} //blocking forever
 
 	//TODO: MAIN
 	// DONE // refactor to JobI interface	// with all public methods??
@@ -59,5 +93,5 @@ func main() {
 	// config path in env for prod/dev
 	// logger with prod/dev
 	// Multiplicator for job complexity store in config
-	// htmx separate update for done jobs quantity. Commulative complexity..
+	// DONE// htmx separate update for done jobs quantity. Commulative complexity..
 }

@@ -1,0 +1,7 @@
+---
+services:
+  loadmonitor:
+    build: ./
+    ports:
+      - 8085:8085
+      - 8081:8081

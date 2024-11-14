@@ -4,14 +4,16 @@ import (
 	"testing"
 	"time"
 
+	"github.com/prometheus/client_golang/prometheus"
 	"github.com/stretchr/testify/assert"
 	"github.com/uszebr/loadmonitor/inner/domain/job"
+	"github.com/uszebr/loadmonitor/inner/domain/metric"
 )
 
 // Smoke
 func TestCollector_AddJobs(t *testing.T) {
 	// Test case where we collect less than the desired number of jobs
-	c := NewCollector(3)
+	c := NewCollector(3, metric.NewMetrics(prometheus.NewRegistry()))
 	jobChan := make(chan job.JobI)
 
 	// Start the collector in a separate goroutine
@@ -42,7 +44,7 @@ func TestCollector_AddJobs(t *testing.T) {
 
 func TestCollector_OverflowJobs(t *testing.T) {
 	// Test case where the number of jobs exceeds the collector's capacity
-	c := NewCollector(3)
+	c := NewCollector(3, metric.NewMetrics(prometheus.NewRegistry()))
 	jobChan := make(chan job.JobI)
 
 	// Start the collector in a separate goroutine
@@ -75,7 +77,7 @@ func TestCollector_OverflowJobs(t *testing.T) {
 
 func TestCollector_GetCountAndCountSt(t *testing.T) {
 	// Test case for retrieving count in both int64 and string formats
-	c := NewCollector(3)
+	c := NewCollector(3, metric.NewMetrics(prometheus.NewRegistry()))
 	jobChan := make(chan job.JobI)
 
 	// Start the collector in a separate goroutine
@@ -100,7 +102,7 @@ func TestCollector_GetCountAndCountSt(t *testing.T) {
 
 func TestCollector_SumOfComplexitySt(t *testing.T) {
 	// Test case for retrieving the sum of complexities as a string
-	c := NewCollector(3)
+	c := NewCollector(3, metric.NewMetrics(prometheus.NewRegistry()))
 	jobChan := make(chan job.JobI)
 
 	// Start the collector in a separate goroutine
