@@ -25,7 +25,7 @@ func NewCollector(quantity int, metric *metric.Metrics) *Collector {
 	return &Collector{
 		jobs:     make([]job.JobI, 0, quantity),
 		quantity: quantity,
-		metric: metric,
+		metric:   metric,
 	}
 }
 
@@ -45,11 +45,13 @@ func (c *Collector) collect(jobChan <-chan job.JobI) {
 			// Use circular indexing to overwrite the oldest job
 			c.jobs[c.count.Load()%int64(c.quantity)] = job
 		}
-		fmt.Printf("D[%s] Complex: [%v] MemoryLoad: [%v] Status: [%v] Duration: [%v] \n", job.Id().String(), job.ComplexityInt(), job.MemoryLoadInt(), job.Status(), job.JobDuration())
+		//fmt.Printf("D[%s] Complex: [%v] MemoryLoad: [%v] Status: [%v] Duration: [%v] \n", job.Id().String(), job.ComplexityInt(), job.MemoryLoadInt(), job.Status(), job.JobDuration())
 		c.mu.Unlock()
 		c.count.Add(1)
-		
+		c.metric.DoneJobsCounter.Inc()
+
 		c.sumOfComplexity.Add(job.ComplexityInt())
+		c.metric.CumulativeComplexity.Add(float64(job.ComplexityInt()))
 	}
 }
 
