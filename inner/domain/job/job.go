@@ -12,12 +12,39 @@ import (
 	"github.com/google/uuid"
 )
 
-const (
-	// used to muliply complexity
-	COMPLEXITY_INTERACTIONS_MULTIPLIER = 1_000_000
-	// used for comlexity in each iteration
-	COMPLEXITY_PARTICULAR_VALUE_MAX = 10
-)
+// TODO: delete/refactored to var/config
+//const (
+
+//COMPLEXITY_INTERACTIONS_MULTIPLIER = 1_000_000
+// used for comlexity in each iteration
+//	COMPLEXITY_PARTICULAR_VALUE_MAX = 10
+//)
+
+// used to muliply complexity
+// default value(may reset in config)
+var complexityMultiplier ComplexityMultiplier = 1_000_000
+
+type ComplexityMultiplier int
+
+func SetComplexityMultiplier(multiplier int) {
+	if multiplier < 0 {
+		panic("Multiplier can not be less then 0")
+	}
+	complexityMultiplier = ComplexityMultiplier(multiplier)
+}
+
+// used for comlexity in each iteration
+// default value(may reset in config)
+var multiplyValue MultiplyValue = 10
+
+type MultiplyValue int
+
+func SetMultiplyValue(value int) {
+	if value < 0 {
+		panic("Multiply Value can not be less then 0")
+	}
+	multiplyValue = MultiplyValue(value)
+}
 
 // stored here because a lot of consumers of this interface
 type JobI interface {
@@ -147,7 +174,7 @@ func (j *Job) Do(ctx context.Context) {
 	}
 	j.setStatus(STARTED)
 	j.loadMemory()
-	iterations := int(j.complexity) * COMPLEXITY_INTERACTIONS_MULTIPLIER
+	iterations := int(j.complexity) * int(complexityMultiplier)
 	result := int64(1)
 	for i := 0; i < iterations; i++ {
 		select {
@@ -156,7 +183,7 @@ func (j *Job) Do(ctx context.Context) {
 			j.setStatus(CANCELED)
 			return
 		default:
-			result += int64(rand.Intn(COMPLEXITY_PARTICULAR_VALUE_MAX) * rand.Intn(COMPLEXITY_PARTICULAR_VALUE_MAX))
+			result += int64(rand.Intn(int(multiplyValue)) * rand.Intn(int(multiplyValue)))
 		}
 	}
 	j.setResult(cmp.Or(result, 1))
@@ -182,7 +209,7 @@ func (j *Job) loadMemory() {
 func (j *Job) unloadMemory() {
 	j.mu.Lock()
 	defer j.mu.Unlock()
-	j.memoryLoader = make([]byte, 0)
+	j.memoryLoader = []byte(nil)
 }
 
 // abstracting complexity

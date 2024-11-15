@@ -2,11 +2,13 @@ package loadmanagerhandl
 
 import (
 	"fmt"
+	"log/slog"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uszebr/loadmonitor/inner/domain/jobproducer"
 	"github.com/uszebr/loadmonitor/inner/domain/workerpool"
+	"github.com/uszebr/loadmonitor/inner/logger"
 	"github.com/uszebr/loadmonitor/inner/util/ginutil"
 	"github.com/uszebr/loadmonitor/inner/view/loadmanagerview"
 )
@@ -27,7 +29,7 @@ func (h LoadManagerHandler) HandlePage(c *gin.Context) {
 	workerPoolFormData := loadmanagerview.WorkerPoolFormData{WorkerPool: h.workerPool, Success: false}
 	err := ginutil.Render(c, 200, loadmanagerview.LoadManagerPage(jobProducerFormData, workerPoolFormData))
 	if err != nil {
-		fmt.Printf("Error Rendering: %v\n", err.Error())
+		slog.Error("Error Rendering", logger.Err(err))
 	}
 }
 
@@ -45,7 +47,7 @@ func (h LoadManagerHandler) HandleProducer(c *gin.Context) {
 	jobProducerFormData := loadmanagerview.JobProducerFormData{JobProducer: h.jobProducer, Success: true, ErrorComplexity: "", ErrorMemoryLoad: ""}
 	err := ginutil.Render(c, 200, loadmanagerview.ProducerForm(jobProducerFormData))
 	if err != nil {
-		fmt.Printf("Error Rendering: %v\n", err.Error())
+		slog.Error("Error Rendering", logger.Err(err))
 	}
 }
 
@@ -84,14 +86,14 @@ func (h LoadManagerHandler) HandleWorkers(c *gin.Context) {
 		workerPoolFormData := loadmanagerview.WorkerPoolFormData{WorkerPool: h.workerPool, Success: false, ErrorWorkerQuantity: errWorkers}
 		err := ginutil.Render(c, 200, loadmanagerview.WorkerForm(workerPoolFormData))
 		if err != nil {
-			fmt.Printf("Error Rendering: %v\n", err.Error())
+			slog.Error("Error Rendering", logger.Err(err))
 		}
 		return
 	}
 	h.workerPool.SetWorkerCount(workers)
 	workerPoolFormData := loadmanagerview.WorkerPoolFormData{WorkerPool: h.workerPool, Success: true, ErrorWorkerQuantity: ""}
 	err := ginutil.Render(c, 200, loadmanagerview.WorkerForm(workerPoolFormData))
-	fmt.Printf("Error Rendering: %v\n", err.Error())
+	slog.Error("Error Rendering", logger.Err(err))
 }
 
 // validateWorkersFormValues return string instead of error just to consitancy(follow pattern in previous validator)
