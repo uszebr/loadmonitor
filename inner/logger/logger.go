@@ -42,8 +42,11 @@ func MustInitLogger(level LogLevel) {
 
 // Err Using to add error to the slog as attribute
 func Err(err error) slog.Attr {
-	return slog.Attr{
-		Key:   "error",
-		Value: slog.StringValue(err.Error()),
+	if err != nil {
+		return slog.Attr{
+			Key:   "error",
+			Value: slog.StringValue(err.Error()),
+		}
 	}
+	return slog.Attr{}
 }

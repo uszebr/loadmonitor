@@ -93,7 +93,9 @@ func (h LoadManagerHandler) HandleWorkers(c *gin.Context) {
 	h.workerPool.SetWorkerCount(workers)
 	workerPoolFormData := loadmanagerview.WorkerPoolFormData{WorkerPool: h.workerPool, Success: true, ErrorWorkerQuantity: ""}
 	err := ginutil.Render(c, 200, loadmanagerview.WorkerForm(workerPoolFormData))
-	slog.Error("Error Rendering", logger.Err(err))
+	if err != nil {
+		slog.Error("Error Rendering", logger.Err(err))
+	}
 }
 
 // validateWorkersFormValues return string instead of error just to consitancy(follow pattern in previous validator)

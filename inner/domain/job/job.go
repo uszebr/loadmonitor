@@ -12,17 +12,14 @@ import (
 	"github.com/google/uuid"
 )
 
-// TODO: delete/refactored to var/config
-//const (
-
-//COMPLEXITY_INTERACTIONS_MULTIPLIER = 1_000_000
-// used for comlexity in each iteration
-//	COMPLEXITY_PARTICULAR_VALUE_MAX = 10
-//)
+const (
+	COMPLEXITY_INTERACTIONS_MULTIPLIER_DEFAULT = 1_000_000
+	COMPLEXITY_PARTICULAR_VALUE_MAX_DEFAULT    = 10
+)
 
 // used to muliply complexity
 // default value(may reset in config)
-var complexityMultiplier ComplexityMultiplier = 1_000_000
+var complexityMultiplier ComplexityMultiplier
 
 type ComplexityMultiplier int
 
@@ -35,7 +32,7 @@ func SetComplexityMultiplier(multiplier int) {
 
 // used for comlexity in each iteration
 // default value(may reset in config)
-var multiplyValue MultiplyValue = 10
+var multiplyValue MultiplyValue
 
 type MultiplyValue int
 

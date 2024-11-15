@@ -50,11 +50,11 @@ func MustLoad() StartValues {
 	startValues.LogLevel = cmp.Or(cfg.LogLevel, logger.DEFAULTLOGLEVEL)
 	logger.MustInitLogger(startValues.LogLevel)
 
-	job.SetComplexityMultiplier(cfg.Multiplier)
-	startValues.Multiplier = cfg.Multiplier
+	startValues.Multiplier = cmp.Or(cfg.Multiplier, job.COMPLEXITY_INTERACTIONS_MULTIPLIER_DEFAULT)
+	job.SetComplexityMultiplier(startValues.Multiplier)
 
-	job.SetMultiplyValue(cfg.MultiplyValue)
-	startValues.MultiplyValue = cfg.MultiplyValue
+	startValues.MultiplyValue = cmp.Or(cfg.MultiplyValue, job.COMPLEXITY_PARTICULAR_VALUE_MAX_DEFAULT)
+	job.SetMultiplyValue(startValues.MultiplyValue)
 
 	return startValues
 }
