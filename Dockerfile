@@ -18,6 +18,6 @@ FROM gcr.io/distroless/base-debian11
 # Copy the binary from the builder stage to the distroless image
 COPY --from=build /app/loadmonitor /loadmonitor
 COPY --from=build /app/assets /assets
-
+COPY --from=build /app/config /config
 # Set the entrypoint
 ENTRYPOINT ["/loadmonitor"]

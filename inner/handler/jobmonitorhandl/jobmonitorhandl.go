@@ -1,10 +1,11 @@
 package jobmonitorhandl
 
 import (
-	"fmt"
+	"log/slog"
 
 	"github.com/gin-gonic/gin"
 	"github.com/uszebr/loadmonitor/inner/domain/collector"
+	"github.com/uszebr/loadmonitor/inner/logger"
 	"github.com/uszebr/loadmonitor/inner/util/ginutil"
 	"github.com/uszebr/loadmonitor/inner/view/jobmonitorview"
 )
@@ -20,13 +21,13 @@ func New(jc *collector.Collector) JobMonitorHandler {
 func (h JobMonitorHandler) HandlePage(c *gin.Context) {
 	err := ginutil.Render(c, 200, jobmonitorview.JobMonitorPage())
 	if err != nil {
-		fmt.Printf("Error Rendering: %v\n", err.Error())
+		slog.Error("Error Rendering", logger.Err(err))
 	}
 }
 
 func (h JobMonitorHandler) HandlePost(c *gin.Context) {
 	err := ginutil.Render(c, 200, jobmonitorview.JobMonitorPost(h.jobCollector))
 	if err != nil {
-		fmt.Printf("Error Rendering: %v\n", err.Error())
+		slog.Error("Error Rendering", logger.Err(err))
 	}
 }

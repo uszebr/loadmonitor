@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"fmt"
+	"log/slog"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -13,17 +13,23 @@ import (
 	"github.com/uszebr/loadmonitor/inner/domain/jobproducer"
 	"github.com/uszebr/loadmonitor/inner/domain/metric"
 	"github.com/uszebr/loadmonitor/inner/domain/workerpool"
+	"github.com/uszebr/loadmonitor/inner/envconfig"
 	"github.com/uszebr/loadmonitor/inner/handler/jobmonitorhandl"
 	"github.com/uszebr/loadmonitor/inner/handler/loadmanagerhandl"
 	"github.com/uszebr/loadmonitor/inner/handler/runtimehandl"
+	"github.com/uszebr/loadmonitor/inner/logger"
 )
 
 const (
-	VERSION = "0.2" //TODO: move to config or env var
+	VERSION = "0.2"
 )
 
 func main() {
-	fmt.Println("!!!!!!!!!!!!!!!Load Monitor started..")
+	startValues := envconfig.MustLoad()
+
+	slog.Info("Loaded with start values", "startValues", startValues)
+	//for compiler not complain
+	_ = startValues
 
 	//PROMETHEUS
 	promReg := prometheus.NewRegistry()
@@ -74,14 +80,14 @@ func main() {
 	// Start Load Monitor
 	go func() {
 		if err := engine.Run(":8085"); err != nil {
-			fmt.Printf("Monitor server failed: %v\n", err)
+			slog.Error("Monitor server failed", logger.Err(err))
 		}
 	}()
 
 	// Start Prometheus metrics server using Gin on a separate port
 	go func() {
 		if err := enginePrometheus.Run(":8081"); err != nil {
-			fmt.Printf("Metrics server failed: %v\n", err)
+			slog.Error("Metrics server failed", logger.Err(err))
 		}
 	}()
 

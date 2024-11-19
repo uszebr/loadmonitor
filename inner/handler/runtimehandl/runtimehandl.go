@@ -1,11 +1,12 @@
 package runtimehandl
 
 import (
-	"fmt"
+	"log/slog"
 	"runtime"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/uszebr/loadmonitor/inner/logger"
 	"github.com/uszebr/loadmonitor/inner/util/ginutil"
 	"github.com/uszebr/loadmonitor/inner/view/rtimemonitor"
 )
@@ -44,6 +45,6 @@ func (h RunTimeHandl) HandlePage(c *gin.Context) {
 	}
 	err := ginutil.Render(c, 200, rtimemonitor.RuntimeMonitorPage(rtdata))
 	if err != nil {
-		fmt.Printf("Error Rendering: %v\n", err.Error())
+		slog.Error("Error Rendering", logger.Err(err))
 	}
 }
