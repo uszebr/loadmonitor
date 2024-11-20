@@ -19,10 +19,11 @@ func (rtu RuntimeUpdater) StartUpdating(ctx context.Context) {
 	go func() {
 		ticker := time.NewTicker(rtu.every)
 		defer ticker.Stop()
+
 		for {
 			select {
 			case <-ctx.Done():
-				break
+				return
 			case <-ticker.C:
 				rtu.metric.GoRoutines.Set(float64(runtime.NumGoroutine()))
 			}
