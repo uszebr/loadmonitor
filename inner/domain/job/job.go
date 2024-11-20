@@ -19,7 +19,7 @@ const (
 
 // used to muliply complexity
 // default value(may reset in config)
-var complexityMultiplier ComplexityMultiplier
+var complexityMultiplier ComplexityMultiplier = COMPLEXITY_INTERACTIONS_MULTIPLIER_DEFAULT
 
 type ComplexityMultiplier int
 
@@ -32,7 +32,7 @@ func SetComplexityMultiplier(multiplier int) {
 
 // used for comlexity in each iteration
 // default value(may reset in config)
-var multiplyValue MultiplyValue
+var multiplyValue MultiplyValue = COMPLEXITY_PARTICULAR_VALUE_MAX_DEFAULT
 
 type MultiplyValue int
 

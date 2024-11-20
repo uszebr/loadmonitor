@@ -93,7 +93,6 @@ func TestJobDo_CompletedSuccessfully(t *testing.T) {
 	ctx := context.Background()
 
 	job.Do(ctx)
-
 	assert.Equal(t, FINISHED, job.Status())
 	assert.Greater(t, job.Result(), int64(1), "Result should be greater than 1 since it was calculated.")
 	assert.False(t, job.Start().IsZero(), "Start time should be set")
